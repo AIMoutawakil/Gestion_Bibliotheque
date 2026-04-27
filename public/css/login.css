@@ -1,0 +1,140 @@
+/* --- Centrage au milieu de l'écran --- */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  z-index: 10;
+}
+
+/* --- Style du Logo PNG --- */
+.logo-container {
+  width: 80px;
+  height: 80px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(65, 105, 225, 0.4); /* Ombre bleu royal */
+  padding: 10px;
+}
+.logo-image { max-width: 100%; height: auto; }
+
+/* =========================================================
+   TON NOUVEAU DESIGN (Thème Clair / Royal Blue)
+   ========================================================= */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 350px;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Légère ombre pour décoller du fond */
+}
+
+.title {
+  font-size: 28px;
+  color: royalblue;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  margin: 0 0 5px 0;
+}
+
+.title::before, .title::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: royalblue;
+}
+
+.title::before { width: 18px; height: 18px; background-color: royalblue; }
+.title::after { width: 18px; height: 18px; animation: pulse 1s linear infinite; }
+
+.message, .signin { color: rgba(88, 87, 87, 0.822); font-size: 14px; }
+.signin { text-align: center; margin-top: 10px; }
+.signin a { color: royalblue; text-decoration: none; font-weight: 600; }
+.signin a:hover { text-decoration: underline royalblue; }
+
+.flex { display: flex; width: 100%; gap: 10px; }
+
+.form label { position: relative; width: 100%; }
+
+.form label .input {
+  width: 100%;
+  padding: 10px 10px 20px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.form label .input + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: grey;
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+
+.form label .input:placeholder-shown + span { top: 15px; font-size: 0.9em; }
+
+.form label .input:focus + span,
+.form label .input:valid + span {
+  top: 30px; /* L'animation vers le bas que tu as choisie ! */
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.form label .input:valid + span { color: green; }
+
+.submit {
+  border: none;
+  outline: none;
+  background-color: royalblue;
+  padding: 12px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transform: .3s ease;
+  margin-top: 10px;
+}
+
+.submit:hover { background-color: rgb(56, 90, 194); }
+
+@keyframes pulse {
+  from { transform: scale(0.9); opacity: 1; }
+  to { transform: scale(1.8); opacity: 0; }
+}
+
+/* --- Éléments d'erreur et de retour --- */
+.error-box { background-color: #fee2e2; color: #dc2626; padding: 10px; border-radius: 8px; font-size: 0.85rem; border: 1px solid #f87171; text-align: center; }
+.d-none { display: none; }
+.back-link { color: #ffffff; text-decoration: none; font-size: 0.9rem; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.back-link:hover { text-decoration: underline; }

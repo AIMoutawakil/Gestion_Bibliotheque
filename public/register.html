@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Bibliothèque ISGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/background_login.png') no-repeat center center;">
+
+    <div class="login-wrapper">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Logo Bibliothèque" class="logo-image">
+        </div>
+
+        <form class="form" id="register-form">
+            <p class="title">Inscription</p>
+            <p class="message">Créez votre compte pour emprunter des livres.</p>
+            
+            <div class="flex">
+                <label>
+                    <input required="" placeholder="" type="text" class="input" id="prenom">
+                    <span>Prénom</span>
+                </label>
+                <label>
+                    <input required="" placeholder="" type="text" class="input" id="nom">
+                    <span>Nom</span>
+                </label>
+            </div>
+            
+            <label>
+                <input required="" placeholder="" type="email" class="input" id="email">
+                <span>Adresse Email</span>
+            </label>
+            
+            <label>
+                <input required="" placeholder="" type="password" class="input" id="password">
+                <span>Mot de passe</span>
+            </label>
+            
+            <div id="register-error" class="error-box d-none"></div>
+            
+            <button class="submit" type="submit">S'inscrire</button>
+            
+            <p class="signin">Vous avez déjà un compte ? <a href="login.html">Se connecter</a></p>
+        </form>
+
+        <a href="catalogue.html" class="back-link">← Retour au catalogue</a>
+    </div>
+
+    <script src="js/register.js"></script>
+</body>
+</html>

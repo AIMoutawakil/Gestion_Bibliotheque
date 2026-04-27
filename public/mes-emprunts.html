@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Emprunts - Bibliothèque ISGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Quelques petits ajustements spécifiques pour les badges d'emprunt */
+        .status-badge {
+            padding: 5px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: bold;
+        }
+        .status-encours { background-color: #e0e7ff; color: #3730a3; } /* Bleu */
+        .status-retard { background-color: #fee2e2; color: #991b1b; } /* Rouge */
+        .status-rendu { background-color: #dcfce7; color: #166534; } /* Vert */
+        
+        .empty-state {
+            text-align: center; padding: 60px 20px;
+            background: white; border-radius: 16px; border: 1px dashed #cbd5e1;
+            grid-column: 1 / -1; /* Prend toute la largeur */
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar glass-effect">
+        <div class="nav-container">
+            <a class="nav-brand" href="catalogue.html">📚 Bibliothèque ISGA</a>
+            
+            <div class="nav-links">
+                <a href="catalogue.html">Catalogue</a>
+                <a href="mes-emprunts.html" style="color: royalblue; font-weight: 600;">Mes emprunts</a>
+            </div>
+
+            <div class="auth-zone" id="auth-zone">
+                </div>
+        </div>
+    </nav>
+
+        <div class="main-container" style="display: block; max-width: 1000px;">
+        <div class="content-header">
+            <h2>Mes livres empruntés</h2>
+        </div>
+
+        <div class="books-grid" id="my-borrowings-container">
+            <div class="loading-state">Chargement de vos emprunts...</div>
+        </div>
+        </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/mes-emprunts.js"></script>
+</body>
+</html>

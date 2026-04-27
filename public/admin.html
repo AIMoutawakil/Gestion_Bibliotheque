@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Gestion Bibliothèque ISGA</title>
+    <link rel="stylesheet" href="css/style.css"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-layout { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { background: #1e293b; color: white; padding: 20px; }
+        .sidebar h2 { font-size: 1.2rem; margin-bottom: 30px; color: royalblue; }
+        .nav-admin { list-style: none; padding: 0; }
+        .nav-admin li { margin-bottom: 15px; }
+        .nav-admin a { color: #cbd5e1; text-decoration: none; display: block; padding: 10px; border-radius: 8px; }
+        .nav-admin a:hover, .nav-admin a.active { background: #334155; color: white; }
+
+        /* Main Content */
+        .admin-content { padding: 40px; background: #f8fafc; }
+        .stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stat-card h3 { font-size: 0.9rem; color: #64748b; margin-bottom: 10px; }
+        .stat-card p { font-size: 1.8rem; font-weight: bold; color: #1e293b; }
+
+        /* Table */
+        .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+        .admin-table th { background: #f1f5f9; padding: 15px; text-align: left; color: #475569; }
+        .admin-table td { padding: 15px; border-top: 1px solid #f1f5f9; }
+        
+        .btn-return { background: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-return:hover { background: #059669; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin ISGA</h2>
+            <ul class="nav-admin">
+                <li><a href="#" class="active">📊 Tableau de bord</a></li>
+                <li><a href="catalogue.html">📚 Voir le catalogue</a></li>
+                <li><a href="#" onclick="logout()">🚪 Déconnexion</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h1>Gestion des Emprunts</h1>
+            
+            <div class="stat-cards">
+                <div class="stat-card"><h3>Emprunts Actifs</h3><p id="stat-active">-</p></div>
+                <div class="stat-card"><h3>En Retard</h3><p id="stat-late" style="color: #ef4444;">-</p></div>
+                <div class="stat-card"><h3>Livres Total</h3><p id="stat-books">-</p></div>
+            </div>
+
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Étudiant</th>
+                        <th>Livre</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-borrowings-table">
+                    </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

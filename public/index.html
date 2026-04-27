@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Bibliothèque ISGA</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/landing.css">
+    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">↑</button>
+    <script src="js/landing.js"></script>
+
+</head>
+<body>
+    <div id="splash-screen" class="splash-screen">
+        <img src="images/logo.png" alt="Logo ISGA" class="splash-logo pulse-anim">
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="images/logo.png" alt="Logo ISGA" class="nav-logo">
+                <span>Bibliothèque ISGA</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="active">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+            </div>
+
+        <div class="nav-auth">
+                <button id="theme-toggle" class="btn-icon" aria-label="Changer de thème">🌙</button>
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-container">
+            
+            <div class="hero-content">
+                <span class="badge-new">Nouveau Portail Étudiant</span>
+                <h1 class="hero-title">Tout le savoir de l'ISGA à <span class="text-royal">portée de clic.</span></h1>
+                <p class="hero-description">
+                    Découvrez une vaste collection de livres en informatique, management, ingénierie et bien plus. 
+                    Empruntez facilement, apprenez rapidement et réussissez vos études.
+                </p>
+                <div class="hero-buttons">
+                    <a href="catalogue.html" class="btn-primary btn-large">Explorer le catalogue</a>
+                    <a href="#comment-ca-marche" class="btn-secondary btn-large">Comment ça marche ?</a>
+                </div>
+            </div>
+
+            <div class="hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80" alt="Étudiants à la bibliothèque" class="hero-image">
+                
+                <div class="floating-card">
+                    <span class="emoji">📚</span>
+                    <div class="floating-text">
+                        <strong>+ de 5000 livres</strong>
+                        <span>Disponibles en ligne</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <section id="comment-ca-marche" class="features-section">
+        <div class="container text-center">
+            <h2 class="section-title">Comment emprunter un livre ?</h2>
+            <p class="section-subtitle">Un processus simple et rapide, conçu pour les étudiants de l'ISGA.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>1. Cherchez</h3>
+                    <p>Parcourez notre catalogue numérique et trouvez l'ouvrage idéal pour vos cours ou projets.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖱️</div>
+                    <h3>2. Réservez</h3>
+                    <p>Connectez-vous à votre espace étudiant et réservez le livre en un seul clic.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>3. Lisez</h3>
+                    <p>Passez récupérer votre livre à l'accueil de la bibliothèque et profitez-en pendant 14 jours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trending-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Tendances actuelles</h2>
+                <a href="catalogue.html" class="btn-text">Voir tout le catalogue &rarr;</a>
+            </div>
+            
+            <div class="trending-grid">
+                <div class="trend-card">
+                    <img src="images/book_69dcae93d19cf.jpg" alt="Informatique" class="trend-img">
+                    <div class="trend-info">
+                        <span class="badge-category">Informatique</span>
+                        <h4>L'Art du Code Pro</h4>
+                        <p>Martin Fowler</p>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <img src="images/book_69da90da2b4d1.jpg" alt="Management" class="trend-img">
+                    <div class="trend-info">
+                        <span class="badge-category">Management</span>
+                        <h4>Leadership 2.0</h4>
+                        <p>Simon Sinek</p>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <img src="images/book_69da9aa6055de.jpg" alt="Design" class="trend-img">
+                    <div class="trend-info">
+                        <span class="badge-category">Design</span>
+                        <h4>UX/UI Moderne</h4>
+                        <p>Don Norman</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="stats-section">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <span class="stat-number" data-target="5432">0</span>
+                <p>Livres disponibles</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="1250">0</span>
+                <p>Étudiants inscrits</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="14">0</span>
+                <p>Jours d'emprunt</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header text-center" style="display: block;">
+                <h2 class="section-title">Ce qu'en disent nos étudiants</h2>
+                <p class="section-subtitle">Ils l'utilisent tous les jours pour réussir.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="quote">"Une plateforme incroyable ! J'ai trouvé toutes les références pour mon projet de fin d'études en quelques clics."</p>
+                    <div class="author">
+                        <div class="author-avatar">KA</div>
+                        <div class="author-info">
+                            <strong>Karim A.</strong>
+                            <span>Ingénierie - 5ème année</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="quote">"Le système de réservation est super fluide. Je gagne un temps précieux entre deux cours."</p>
+                    <div class="author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <strong>Sara M.</strong>
+                            <span>Management - 3ème année</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title text-center">Questions fréquentes</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">Combien de temps puis-je garder un livre ? <span class="icon">+</span></button>
+                    <div class="faq-answer"><p>La durée standard d'un emprunt est de 14 jours. Vous pouvez prolonger cette durée une fois depuis votre espace personnel si le livre n'est pas réservé par un autre étudiant.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Comment rendre un livre emprunté ? <span class="icon">+</span></button>
+                    <div class="faq-answer"><p>Il vous suffit de le déposer physiquement à l'accueil de la bibliothèque. L'administrateur scannera le livre et votre profil sera mis à jour instantanément.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Que faire si je perds mon mot de passe ? <span class="icon">+</span></button>
+                    <div class="faq-answer"><p>Veuillez contacter le support informatique de l'ISGA ou vous rendre à la réception avec votre carte d'étudiant pour réinitialiser vos accès.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="Logo" class="footer-logo">
+                <span class="footer-title">Bibliothèque ISGA</span>
+                <p class="footer-desc">Le centre de ressources numériques et physiques pour les étudiants.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <a href="index.html">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+                <a href="login.html">Connexion</a>
+            </div>
+            <div class="footer-links">
+                <h4>Administration</h4>
+                <a href="admin.html">Espace Admin</a>
+                <a href="#">Support technique</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ISGA. Tous droits réservés. Développé par Ai Moutawakil.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

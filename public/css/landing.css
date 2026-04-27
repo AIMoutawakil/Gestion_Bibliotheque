@@ -1,0 +1,376 @@
+/* --- Variables & Reset --- */
+:root {
+    --royal-blue: royalblue;
+    --royal-blue-hover: #3a5bd9;
+    --text-dark: #111827;
+    --text-muted: #4b5563;
+    --bg-light: #f8fafc;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background-color: var(--bg-light); color: var(--text-dark); }
+a { text-decoration: none; }
+
+/* =========================================
+   1. LA NAVBAR (Glassmorphism)
+   ========================================= */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; color: var(--text-dark); }
+.nav-logo { height: 40px; width: 40px; border-radius: 8px; object-fit: contain; background: white; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+.nav-links { display: flex; gap: 30px; }
+.nav-links a { color: var(--text-muted); font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--royal-blue); }
+
+.nav-auth { display: flex; align-items: center; gap: 15px; }
+.btn-text { color: var(--text-dark); font-weight: 600; }
+.btn-text:hover { color: var(--royal-blue); }
+
+.btn-primary {
+    background-color: var(--royal-blue);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.btn-primary:hover { background-color: var(--royal-blue-hover); }
+
+/* =========================================
+   2. LE HERO HEADER (L'accroche)
+   ========================================= */
+.hero-section {
+    min-height: 100vh; /* Prend toute la hauteur de l'écran */
+    padding-top: 80px; /* Pour compenser la navbar fixe */
+    display: flex;
+    align-items: center;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes de taille égale */
+    gap: 50px;
+    align-items: center;
+}
+
+/* --- Côté Gauche (Textes) --- */
+.badge-new {
+    display: inline-block;
+    background-color: rgba(65, 105, 225, 0.1);
+    color: var(--royal-blue);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem; /* Très grand titre */
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.text-royal { color: var(--royal-blue); }
+
+.hero-description {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 90%;
+}
+
+.hero-buttons { display: flex; gap: 15px; }
+
+.btn-large { padding: 15px 30px; font-size: 1.1rem; border-radius: 12px; }
+.btn-secondary {
+    background-color: white;
+    color: var(--text-dark);
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--royal-blue); color: var(--royal-blue); }
+
+/* --- Côté Droit (Image et Carte flottante) --- */
+.hero-image-wrapper { position: relative; }
+
+.hero-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.floating-card {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    animation: float 4s ease-in-out infinite; /* Petite animation de flottaison */
+}
+
+.floating-card .emoji { font-size: 2rem; }
+.floating-text { display: flex; flex-direction: column; }
+.floating-text strong { font-size: 1.1rem; color: var(--text-dark); }
+.floating-text span { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Animation de la carte flottante */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* =========================================
+   CLASSES UTILES (Utilitaires)
+   ========================================= */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.text-center { text-align: center; }
+.section-title { font-size: 2.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+.section-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 50px; }
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+
+/* =========================================
+   3. SECTION : COMMENT ÇA MARCHE
+   ========================================= */
+.features-section { padding: 100px 0; background-color: white; }
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.feature-card {
+    background: var(--bg-light);
+    padding: 40px 30px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(65, 105, 225, 0.1); /* Ombre bleu royal */
+    background: white;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: rgba(65, 105, 225, 0.1);
+    height: 80px; width: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin-left: auto; margin-right: auto;
+}
+
+.feature-card h3 { font-size: 1.25rem; color: var(--text-dark); margin-bottom: 15px; }
+.feature-card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+
+/* =========================================
+   4. SECTION : TENDANCES
+   ========================================= */
+.trending-section { padding: 100px 0; background-color: var(--bg-light); }
+
+.trending-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+
+.trend-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.trend-card:hover { transform: scale(1.02); }
+
+.trend-img { width: 100%; height: 250px; object-fit: cover; }
+.trend-info { padding: 20px; position: relative; }
+
+.trend-info .badge-category {
+    position: absolute; top: -15px; right: 20px;
+    background: var(--royal-blue); color: white;
+    padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+}
+
+.trend-info h4 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-dark); }
+.trend-info p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* =========================================
+   5. FOOTER (Pied de page)
+   ========================================= */
+.footer { background-color: #111827; color: white; padding-top: 60px; margin-top: 50px; }
+
+.footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+
+.footer-logo { width: 40px; height: 40px; border-radius: 8px; background: white; padding: 2px; margin-right: 10px; vertical-align: middle; }
+.footer-title { font-size: 1.2rem; font-weight: 700; color: white; }
+.footer-desc { color: #9ca3af; margin-top: 15px; font-size: 0.9rem; max-width: 300px; line-height: 1.6; }
+
+.footer-links h4 { font-size: 1rem; color: white; margin-bottom: 20px; }
+.footer-links a { display: block; color: #9ca3af; margin-bottom: 12px; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--royal-blue); text-decoration: none; }
+
+.footer-bottom { border-top: 1px solid #374151; text-align: center; padding: 20px 0; color: #6b7280; font-size: 0.85rem; }
+/* =========================================
+   LE MODE SOMBRE (Dark Mode Magic)
+   ========================================= */
+[data-theme="dark"] {
+    --bg-light: #0f172a; /* Fond bleu nuit très foncé */
+    --text-dark: #f8fafc; /* Texte blanc cassé */
+    --text-muted: #94a3b8;
+}
+
+[data-theme="dark"] .navbar { background: rgba(15, 23, 42, 0.85); border-bottom: 1px solid rgba(255,255,255,0.05); }
+[data-theme="dark"] .feature-card, [data-theme="dark"] .trend-card, [data-theme="dark"] .testimonial-card, [data-theme="dark"] .faq-item { background: #1e293b; border-color: rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+[data-theme="dark"] .btn-secondary { background: transparent; color: white; border-color: #334155; }
+[data-theme="dark"] .btn-secondary:hover { border-color: var(--royal-blue); }
+[data-theme="dark"] .floating-card { background: #1e293b; border: 1px solid #334155; }
+
+.btn-icon { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; transition: transform 0.2s; }
+.btn-icon:hover { transform: scale(1.1); }
+
+/* =========================================
+   SECTION CHIFFRES CLÉS
+   ========================================= */
+.stats-section { background-color: var(--royal-blue); color: white; padding: 60px 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 30px; }
+.stat-number { font-size: 3.5rem; font-weight: 800; display: block; margin-bottom: 10px; }
+.stat-item p { font-size: 1.1rem; opacity: 0.9; font-weight: 500; }
+
+/* =========================================
+   SECTION TÉMOIGNAGES
+   ========================================= */
+.testimonials-section { padding: 100px 0; background-color: var(--bg-light); }
+.testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+.testimonial-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); }
+.stars { letter-spacing: 2px; margin-bottom: 15px; }
+.quote { font-size: 1.1rem; color: var(--text-dark); line-height: 1.6; margin-bottom: 25px; font-style: italic; }
+.author { display: flex; align-items: center; gap: 15px; }
+.author-avatar { width: 50px; height: 50px; background: rgba(65, 105, 225, 0.1); color: var(--royal-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.2rem; }
+.author-info strong { display: block; color: var(--text-dark); }
+.author-info span { font-size: 0.85rem; color: var(--text-muted); }
+
+/* =========================================
+   SECTION F.A.Q
+   ========================================= */
+.faq-section { padding: 100px 0; background-color: white; }
+.faq-container { max-width: 800px; margin: 0 auto; }
+.faq-item { background: var(--bg-light); margin-bottom: 15px; border-radius: 12px; overflow: hidden; transition: 0.3s; }
+.faq-question { width: 100%; text-align: left; padding: 20px 25px; font-size: 1.1rem; font-weight: 600; color: var(--text-dark); background: none; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 25px; }
+.faq-answer p { padding-bottom: 20px; color: var(--text-muted); line-height: 1.6; }
+.faq-item.active .faq-answer { max-height: 200px; }
+.faq-item.active .icon { transform: rotate(45deg); color: var(--royal-blue); }
+.icon { font-size: 1.5rem; transition: transform 0.3s; }
+/* =========================================
+   FINITIONS : SPLASH SCREEN
+   ========================================= */
+.splash-screen {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--bg-light); z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+}
+.splash-screen.hidden { opacity: 0; visibility: hidden; }
+
+.splash-logo { 
+    width: 100px; height: 100px; border-radius: 50%; 
+    background: white; padding: 15px; 
+    box-shadow: 0 10px 40px rgba(65, 105, 225, 0.3); 
+}
+.pulse-anim { animation: splashPulse 1.5s infinite; }
+
+@keyframes splashPulse { 
+    0% { transform: scale(0.9); opacity: 0.8;} 
+    50% { transform: scale(1.1); opacity: 1;} 
+    100% { transform: scale(0.9); opacity: 0.8;} 
+}
+
+/* Le fond s'adapte en Dark Mode */
+[data-theme="dark"] .splash-screen { background-color: var(--bg-light); }
+
+/* =========================================
+   FINITIONS : BOUTON RETOUR EN HAUT
+   ========================================= */
+.back-to-top {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 50px; height: 50px; border-radius: 50%;
+    background-color: var(--royal-blue); color: white;
+    border: none; font-size: 1.5rem; cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 90;
+    opacity: 0; transform: translateY(20px); pointer-events: none;
+    transition: all 0.3s ease;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { background-color: var(--royal-blue-hover); transform: translateY(-5px) scale(1.05); }
+
+/* =========================================
+   FINITIONS : ANIMATIONS AU SCROLL
+   ========================================= */
+/* Classe de base pour cacher les éléments */
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+/* Classe active qui déclenche l'apparition */
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* =========================================
+   📱 RESPONSIVE (Adaptation Mobile & Tablette)
+   ========================================= */
+@media (max-width: 992px) {
+    /* Le Hero Header passe sur une seule colonne */
+    .hero-container { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+    .hero-title { font-size: 2.5rem; }
+    .hero-description { margin: 0 auto 30px auto; }
+    .hero-buttons { justify-content: center; }
+    
+    /* La petite carte flottante s'adapte */
+    .floating-card { bottom: 10px; left: 10px; padding: 10px; }
+    
+    /* Toutes les grilles passent sur 1 seule colonne */
+    .features-grid, .trending-grid, .stats-grid, .testimonials-grid { grid-template-columns: 1fr; gap: 20px; }
+    
+    /* Le Footer s'aligne verticalement */
+    .footer-content { grid-template-columns: 1fr; text-align: center; }
+    .footer-desc { margin: 15px auto; }
+    
+    /* On cache les textes de navigation pour ne garder que les boutons sur mobile */
+    .nav-links { display: none; }
+}

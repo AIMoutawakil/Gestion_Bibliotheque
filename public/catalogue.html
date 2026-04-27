@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue - Bibliothèque ISGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <style>
+        /* Layout principal du catalogue */
+        .catalog-layout { 
+            display: grid; 
+            grid-template-columns: 250px 1fr; 
+            gap: 40px; 
+            max-width: 1200px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+        }
+        
+        /* 1. La Sidebar (Catégories) */
+        .sidebar { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            height: fit-content; 
+            position: sticky; 
+            top: 100px; /* Reste visible au scroll */
+        }
+        .sidebar h3 { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 700; }
+        .cat-btn { 
+            display: block; width: 100%; text-align: left; background: none; border: none; 
+            padding: 12px 15px; border-radius: 8px; color: #475569; cursor: pointer; 
+            transition: all 0.2s; font-size: 1rem; margin-bottom: 5px; font-weight: 500;
+        }
+        .cat-btn:hover { background: #f1f5f9; color: royalblue; }
+        .cat-btn.active { background: royalblue; color: white; }
+
+        /* 2. L'En-tête du catalogue (Titre + Recherche) */
+        .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .catalog-header h1 { font-size: 1.8rem; color: #1e293b; margin: 0; }
+        .search-input { 
+            padding: 12px 20px; border-radius: 30px; border: 1px solid #e2e8f0; 
+            width: 300px; outline: none; transition: 0.3s; font-family: inherit;
+        }
+        .search-input:focus { border-color: royalblue; box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1); }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .catalog-layout { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .catalog-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .search-input { width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar glass-effect">
+        <div class="nav-container">
+            <a class="nav-brand" href="index.html">
+                📚 Bibliothèque ISGA
+            </a>
+            
+            <div class="nav-links">
+                <a href="catalogue.html" class="active">Catalogue</a>
+                <a href="mes-emprunts.html">Mes emprunts</a>
+            </div>
+
+            <div class="auth-zone" id="auth-zone">
+                </div>
+        </div>
+    </nav>
+
+    <div class="catalog-layout">
+        
+        <aside class="sidebar">
+            <h3>Catégories</h3>
+            <div id="category-list">
+                <button class="cat-btn active" data-category="all">Toutes les catégories</button>
+                <button class="cat-btn" data-category="Informatique">Informatique</button>
+                <button class="cat-btn" data-category="Management">Management</button>
+                <button class="cat-btn" data-category="Design">Design</button>
+                <button class="cat-btn" data-category="Sciences">Sciences</button>
+            </div>
+        </aside>
+
+        <main>
+            <div class="catalog-header">
+                <h1 id="catalog-title">Tous les livres</h1>
+                <input type="text" id="search-input" class="search-input" placeholder="Rechercher un titre ou un auteur...">
+            </div>
+
+            <div class="books-grid" id="books-container">
+                <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">
+                    Chargement du catalogue...
+                </div>
+            </div>
+        </main>
+        
+    </div>
+
+    <script src="js/auth.js"></script> 
+    <script src="js/catalogue.js"></script>
+</body>
+</html>
