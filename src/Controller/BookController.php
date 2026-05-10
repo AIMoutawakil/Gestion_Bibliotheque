@@ -10,7 +10,7 @@ class BookController {
         $this->bookRepository = new BookRepository();
     }
 
-    public function getAllBooks(): void {
+public function getAllBooks(): void {
         $books = $this->bookRepository->getAllBooks();
         $booksArray = [];
         
@@ -25,7 +25,10 @@ class BookController {
                 'isAvailable' => $book->getAvailableQuantity() > 0,
                 'categoryId' => $book->getCategoryId(),
                 'categoryName' => $book->getCategoryName(),
-                'imageUrl' => $book->getImageUrl() // <-- NOUVEAU
+                'imageUrl' => $book->getImageUrl(),
+                // 👇 LES DEUX LIGNES MANQUANTES SONT ICI 👇
+                'languageId' => $book->getLanguageId(), 
+                'languageName' => $book->getLanguageName()
             ];
         }
         echo json_encode($booksArray);
@@ -45,7 +48,10 @@ class BookController {
                 'isAvailable' => $book->getAvailableQuantity() > 0,
                 'categoryId' => $book->getCategoryId(),
                 'categoryName' => $book->getCategoryName(),
-                'imageUrl' => $book->getImageUrl() // <-- NOUVEAU
+                'imageUrl' => $book->getImageUrl(),
+                // 👇 AJOUTE ÇA ICI AUSSI 👇
+                'languageId' => $book->getLanguageId(),
+                'languageName' => $book->getLanguageName()
             ]);
         } else {
             http_response_code(404);
@@ -84,14 +90,57 @@ public function createBook(): void {
         }
 
         $data = json_decode(file_get_contents("php://input"), true);
+        
         if (empty($data['title']) || empty($data['author']) || empty($data['categoryId'])) {
             http_response_code(400); echo json_encode(["erreur" => "Champs obligatoires manquants."]); return;
         }
 
+        // =========================================================
+        // 🪄 LE TOUR DE MAGIE POUR LA NOUVELLE CATÉGORIE
+        // =========================================================
+        if ($data['categoryId'] === 'NEW') {
+            if (empty($data['newCategoryName'])) {
+                http_response_code(400); 
+                echo json_encode(["erreur" => "Le nom de la nouvelle catégorie est requis."]); 
+                return;
+            }
+            
+            // On appelle la fonction pour créer la catégorie dans la base
+            $nouvelId = $this->bookRepository->addCategory($data['newCategoryName']);
+            
+            // On remplace le mot "NEW" par le vrai chiffre (l'ID)
+            $data['categoryId'] = $nouvelId;
+        }
+
+        // 🪄 MAGIE POUR LA NOUVELLE LANGUE
+        if ($data['languageId'] === 'NEW') {
+            if (empty($data['newLanguageName'])) {
+                http_response_code(400); echo json_encode(["erreur" => "Nom de la langue requis."]); return;
+            }
+            $nouvelIdLangue = $this->bookRepository->addLanguage($data['newLanguageName']);
+            $data['languageId'] = $nouvelIdLangue;
+        }   
+        // =========================================================
+
         // On traite l'image uploadée
         $finalImageUrl = $this->processImageUpload($data['imageUrl'] ?? null);
 
-        $book = new Book($data['title'], $data['author'], '', (int)$data['totalQuantity'], (int)$data['totalQuantity'], null, (int)$data['categoryId'], null, $finalImageUrl);
+        // On récupère le résumé (synopsis) envoyé par le formulaire
+        $description = $data['synopsis'] ?? '';
+
+        // Création de l'objet Book (le categoryId est maintenant garanti d'être un chiffre)
+            $book = new Book(
+            $data['title'], 
+            $data['author'], 
+            $data['synopsis'] ?? '', 
+            (int)$data['totalQuantity'], 
+            (int)$data['totalQuantity'], 
+            null, 
+            (int)$data['categoryId'], 
+            null, 
+            $finalImageUrl,
+            (int)$data['languageId'] 
+        );
 
         if ($this->bookRepository->addBook($book)) {
             http_response_code(201); echo json_encode(["message" => "Livre ajouté avec succès !"]);

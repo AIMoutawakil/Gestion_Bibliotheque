@@ -124,14 +124,14 @@ public function getAllBorrowingsWithDetails(): array {
             return false;
         }
     }
-    public function findByUserId($userId) {
-        $sql = "SELECT b.id, books.title, books.author, b.borrow_date, b.due_date, b.status 
+public function findByUserId($userId) {
+        // CORRECTION : On a ajouté "books.image_url" juste après "books.author" 👇
+        $sql = "SELECT b.id, books.title, books.author, books.image_url, b.borrow_date, b.due_date, b.status 
                 FROM borrowings b
                 JOIN books ON b.book_id = books.id
                 WHERE b.user_id = :user_id
                 ORDER BY b.borrow_date DESC";
 
-        // CORRECTION : On utilise $this->db et non $this->pdo
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['user_id' => $userId]);
 

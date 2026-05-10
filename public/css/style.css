@@ -331,5 +331,12 @@ body {
 }
 
 /* ==========================================================================
-   RESPONSIVE (Mobile)
+   GRILLE MES EMPRUNTS
    ========================================================================== */
+.borrowings-grid {
+    display: grid;
+    /* On passe de 280px à 180px pour avoir la même largeur que le catalogue */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}

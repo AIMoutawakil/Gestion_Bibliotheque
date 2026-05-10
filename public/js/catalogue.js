@@ -69,60 +69,66 @@ function applyFilters() {
 
 // public/js/catalogue.js
 
+// Dans js/catalogue.js
+
 function displayBooks(booksToDisplay) {
     const container = document.getElementById('books-container');
     container.innerHTML = '';
 
     if (booksToDisplay.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Aucun livre trouvé.</div>`;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Aucun livre trouvé avec ces filtres.</div>`;
         return;
     }
 
     booksToDisplay.forEach(book => {
-        // On récupère le stock disponible
+        // Déterminer la disponibilité
         const stockDispo = book.available_quantity !== undefined ? parseInt(book.available_quantity) : parseInt(book.totalQuantity);
-        
         const isAvailable = stockDispo > 0;
-        const stockColor = isAvailable ? '#166534' : '#991b1b'; // Vert foncé ou Rouge foncé
-        const stockBg = isAvailable ? '#dcfce7' : '#fee2e2'; // Fond vert clair ou rouge clair
-        const stockText = isAvailable ? `En stock : <span class="stock-number">${stockDispo}</span>` : 'Rupture de stock';
         
-        // ASTUCE : On passe "this" dans le onclick pour que la fonction sache exactement sur QUEL bouton on a cliqué !
-        const btnHTML = isAvailable 
-            ? `<button onclick="emprunterLivre(${book.id || book.book_id}, this)" class="btn-primary" style="width: 100%; padding: 12px; border: none; border-radius: 8px; background: royalblue; color: white; cursor: pointer; font-weight: bold; transition: 0.2s;">Emprunter</button>`
-            : `<button disabled style="width: 100%; padding: 12px; border: none; border-radius: 8px; background: #cbd5e1; color: white; font-weight: bold;">Indisponible</button>`;
+        // Configuration du badge
+        const badgeClass = isAvailable ? 'dispo' : 'emprunte';
+        const badgeText = isAvailable ? 'Disponible' : 'Emprunté';
+        
+        // Gestion de l'image (avec sécurité si elle manque)
+        const imageUrl = book.image_url || book.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=' + encodeURIComponent(book.title);
 
-        // On remplace le mot fixe "Livre" par la vraie catégorie du livre en haut à droite
-        const categoryBadge = book.category_name || book.category || 'Livre';
-
+        // NOUVELLE CARTE ENRICHIE
         const cardHTML = `
-            <article class="book-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; display: flex; flex-direction: column;">
-                <header class="book-header" style="height: 220px; position: relative;">
-                    <img src="${book.image_url || book.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=Livre'}" style="width: 100%; height: 100%; object-fit: cover;">
-                    <span class="badge-category" style="position: absolute; top: 10px; right: 10px; background: white; color: royalblue; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                        ${categoryBadge}
-                    </span>
-                </header>
-                
-                <div class="book-body" style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 5px; color: #1e293b;">${book.title}</h3>
-                        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Par ${book.author}</p>
-                    </div>
-                    
-                    <footer style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                        <span class="status-badge" style="font-size: 0.85rem; font-weight: 600; padding: 5px 12px; border-radius: 8px; color: ${stockColor}; background-color: ${stockBg}; width: 100%; text-align: center;">
-                            ${stockText}
-                        </span>
-                        ${btnHTML}
-                    </footer>
+            <article class="catalog-card" onclick="ouvrirDetailsLivre(${book.id || book.book_id})">
+                <div class="card-img-wrapper">
+                    <img src="${imageUrl}" alt="${book.title}" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Image'">
+                    <span class="status-pill ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="card-info">
+                    <h4>${book.title}</h4>
+                    <p>${book.author}</p>
                 </div>
             </article>
         `;
+        
         container.innerHTML += cardHTML;
     });
 }
 
+// L'action déclenchée quand l'étudiant clique sur un livre
+function ouvrirDetailsLivre(bookId) {
+    console.log("L'étudiant a cliqué sur le livre ID :", bookId);
+    
+    // Prochaine étape : Rediriger vers la page de détails !
+    // window.location.href = `details.html?id=${bookId}`;
+}
+
+function actionClicLivre(bookId) {
+    console.log("Livre cliqué ! ID :", bookId);
+    // Prêt pour la suite !
+}
+
+// === LA FONCTION POUR LA SUITE ===
+// C'est ici qu'on mettra ton code quand tu me diras ce qu'on fait après le clic !
+function actionClicLivre(bookId) {
+    console.log("Livre cliqué ! ID :", bookId);
+    // En attente de tes instructions...
+}
 // CORRECTION : On ajoute 'buttonElement' pour modifier le bouton cliqué
 function emprunterLivre(bookId, buttonElement) {
     const user = JSON.parse(sessionStorage.getItem('user'));

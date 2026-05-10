@@ -27,6 +27,8 @@
             <div class="nav-links">
                 <a href="index.html" class="active">Accueil</a>
                 <a href="catalogue.html">Catalogue</a>
+                <a href="a-propos.html">À propos</a>
+                <a href="aide.html">Aide</a>
             </div>
 
         <div class="nav-auth">
@@ -51,6 +53,15 @@
                     <a href="catalogue.html" class="btn-primary btn-large">Explorer le catalogue</a>
                     <a href="#comment-ca-marche" class="btn-secondary btn-large">Comment ça marche ?</a>
                 </div>
+                <!-- La barre de recherche sur l'accueil -->
+                    <div class="hero-search-wrapper" style="margin-top: 40px;">
+                        <form action="catalogue.html" method="GET" class="hero-search-form">
+                            <input type="text" name="q" placeholder="Rechercher un livre, un auteur..." class="hero-search-input">
+                            <button type="submit" class="hero-search-btn">
+                                🔍 Chercher
+                            </button>
+                        </form>
+                    </div>
             </div>
 
             <div class="hero-image-wrapper">
@@ -92,41 +103,94 @@
         </div>
     </section>
 
-    <section class="trending-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Tendances actuelles</h2>
-                <a href="catalogue.html" class="btn-text">Voir tout le catalogue &rarr;</a>
-            </div>
-            
-            <div class="trending-grid">
-                <div class="trend-card">
-                    <img src="images/book_69dcae93d19cf.jpg" alt="Informatique" class="trend-img">
-                    <div class="trend-info">
-                        <span class="badge-category">Informatique</span>
-                        <h4>L'Art du Code Pro</h4>
-                        <p>Martin Fowler</p>
-                    </div>
-                </div>
-                <div class="trend-card">
-                    <img src="images/book_69da90da2b4d1.jpg" alt="Management" class="trend-img">
-                    <div class="trend-info">
-                        <span class="badge-category">Management</span>
-                        <h4>Leadership 2.0</h4>
-                        <p>Simon Sinek</p>
-                    </div>
-                </div>
-                <div class="trend-card">
-                    <img src="images/book_69da9aa6055de.jpg" alt="Design" class="trend-img">
-                    <div class="trend-info">
-                        <span class="badge-category">Design</span>
-                        <h4>UX/UI Moderne</h4>
-                        <p>Don Norman</p>
-                    </div>
-                </div>
-            </div>
+<!-- =========================================
+   SECTION : TENDANCES ACTUELLES (Format Stack)
+   ========================================= -->
+<section class="trending-section">
+    <div class="container">
+        
+        <div class="section-header">
+            <h2 class="section-title">Tendances actuelles</h2>
+            <a href="catalogue.html" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s;" onmouseover="this.style.color='var(--royal-blue)'" onmouseout="this.style.color='var(--text-muted)'">Voir tout le catalogue &rarr;</a>
         </div>
-    </section>
+
+        <!-- La nouvelle grille de 5 livres -->
+        <div class="trending-showcase">
+            
+            <!-- TOP 1 -->
+            <article class="trend-showcase-card">
+                <div class="trend-rank">1</div>
+                <div class="trend-img-wrapper">
+                    <img src="images/art-du-code.jpg" alt="L'Art du Code Pro" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Code'">
+                </div>
+<div class="trend-info">
+                    <h4>L'Art du Code Pro</h4>
+                    <p>Martin Fowler</p>
+                    
+                    <!-- AJOUT : La pastille Disponible -->
+                    <div class="availability-status available">
+                        <span class="status-dot"></span> Disponible
+                    </div>
+                </div>
+            </article>
+
+            <!-- TOP 2 -->
+            <article class="trend-showcase-card">
+                <div class="trend-rank" style="background: #3b82f6;">2</div>
+                <div class="trend-img-wrapper">
+                    <img src="images/biology.jpg" alt="Biologie Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Biologie'">
+                </div>
+                <div class="trend-info">
+                    <h4>Biologie Moderne</h4>
+                    <p>Peter H. Raven</p>
+                    
+                    <!-- AJOUT : La pastille Disponible -->
+                    <div class="availability-status available">
+                        <span class="status-dot"></span> Disponible
+                    </div>      
+                </div>
+            </article>
+
+            <!-- TOP 3 -->
+            <article class="trend-showcase-card">
+                <div class="trend-rank" style="background: #60a5fa;">3</div>
+                <div class="trend-img-wrapper">
+                    <img src="images/informatique.jpg" alt="UX/UI Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Design'">
+                </div>
+                <div class="trend-info">
+                    <h4>UX/UI Moderne</h4>
+                    <p>Don Norman</p>
+                </div>
+            </article>
+
+            <!-- TOP 4 -->
+            <article class="trend-showcase-card">
+                <div class="trend-rank" style="background: #94a3b8;">4</div>
+                <div class="trend-img-wrapper">
+                    <img src="images/management.jpg" alt="Leadership 2.0" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Manage'">
+                </div>
+                <div class="trend-info">
+                    <h4>Leadership 2.0</h4>
+                    <p>Simon Sinek</p>
+                </div>
+            </article>
+
+            <!-- TOP 5 -->
+            <article class="trend-showcase-card">
+                <div class="trend-rank" style="background: #cbd5e1; color: #334155;">5</div>
+                <div class="trend-img-wrapper">
+                    <img src="images/roman.jpg" alt="L'Étranger" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Roman'">
+                </div>
+                <div class="trend-info">
+                    <h4>L'Étranger</h4>
+                    <p>Albert Camus</p>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
     <section class="stats-section">
         <div class="container stats-grid">
             <div class="stat-item">
@@ -172,26 +236,6 @@
                             <span>Management - 3ème année</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq-section">
-        <div class="container">
-            <h2 class="section-title text-center">Questions fréquentes</h2>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-question">Combien de temps puis-je garder un livre ? <span class="icon">+</span></button>
-                    <div class="faq-answer"><p>La durée standard d'un emprunt est de 14 jours. Vous pouvez prolonger cette durée une fois depuis votre espace personnel si le livre n'est pas réservé par un autre étudiant.</p></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Comment rendre un livre emprunté ? <span class="icon">+</span></button>
-                    <div class="faq-answer"><p>Il vous suffit de le déposer physiquement à l'accueil de la bibliothèque. L'administrateur scannera le livre et votre profil sera mis à jour instantanément.</p></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Que faire si je perds mon mot de passe ? <span class="icon">+</span></button>
-                    <div class="faq-answer"><p>Veuillez contacter le support informatique de l'ISGA ou vous rendre à la réception avec votre carte d'étudiant pour réinitialiser vos accès.</p></div>
                 </div>
             </div>
         </div>

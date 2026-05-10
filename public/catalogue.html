@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue - Bibliothèque ISGA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css"> <style>
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/catalogue.css"> 
+    
+    <style>
         /* Layout principal du catalogue */
         .catalog-layout { 
             display: grid; 
@@ -16,7 +19,7 @@
             padding: 0 20px; 
         }
         
-        /* 1. La Sidebar (Catégories) */
+        /* La Sidebar (Catégories) */
         .sidebar { 
             background: white; 
             padding: 20px; 
@@ -35,7 +38,7 @@
         .cat-btn:hover { background: #f1f5f9; color: royalblue; }
         .cat-btn.active { background: royalblue; color: white; }
 
-        /* 2. L'En-tête du catalogue (Titre + Recherche) */
+        /* L'En-tête du catalogue */
         .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .catalog-header h1 { font-size: 1.8rem; color: #1e293b; margin: 0; }
         .search-input { 
@@ -55,24 +58,24 @@
 </head>
 <body class="bg-light">
 
-<nav class="navbar glass-effect">
+    <!-- NAVBAR -->
+    <nav class="navbar glass-effect">
         <div class="nav-container">
-            <a class="nav-brand" href="index.html">
-                📚 Bibliothèque ISGA
-            </a>
-            
+            <a class="nav-brand" href="index.html">📚 Bibliothèque ISGA</a>
             <div class="nav-links">
+                <a href="index.html">Accueil</a>
                 <a href="catalogue.html" class="active">Catalogue</a>
-                <a href="mes-emprunts.html">Mes emprunts</a>
+                <a href="a-propos.html">À propos</a>
+                <a href="aide.html">Aide</a>
             </div>
-
-            <div class="auth-zone" id="auth-zone">
-                </div>
+            <div class="auth-zone" id="auth-zone"></div>
         </div>
     </nav>
 
+    <!-- LAYOUT CATALOGUE -->
     <div class="catalog-layout">
         
+        <!-- SIDEBAR & FILTRES -->
         <aside class="sidebar">
             <h3>Catégories</h3>
             <div id="category-list">
@@ -80,23 +83,50 @@
                 <button class="cat-btn" data-category="Informatique">Informatique</button>
                 <button class="cat-btn" data-category="Management">Management</button>
                 <button class="cat-btn" data-category="Design">Design</button>
-                <button class="cat-btn" data-category="Sciences">Sciences</button>
             </div>
+
+            <h3 style="margin-top: 30px;">Disponibilité</h3>
+            <label class="filter-label">
+                <input type="checkbox" id="filter-dispo"> Uniquement disponibles
+            </label>
+
+            <h3 style="margin-top: 30px;">Langues</h3>
+            <label class="filter-label"><input type="checkbox" checked> Français</label>
+            <label class="filter-label"><input type="checkbox"> Anglais</label>
+            <label class="filter-label"><input type="checkbox"> Arabe</label>
         </aside>
 
         <main>
+            <!-- HEADER (Tri + Recherche) -->
             <div class="catalog-header">
                 <h1 id="catalog-title">Tous les livres</h1>
-                <input type="text" id="search-input" class="search-input" placeholder="Rechercher un titre ou un auteur...">
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <select id="sort-select" class="sort-input">
+                        <option value="new">Nouveautés</option>
+                        <option value="az">Alphabétique (A-Z)</option>
+                        <option value="pop">Plus populaires</option>
+                    </select>
+                    <input type="text" id="search-input" class="search-input" placeholder="Rechercher un titre...">
+                </div>
             </div>
 
+            <!-- GRILLE DES LIVRES -->
             <div class="books-grid" id="books-container">
                 <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">
                     Chargement du catalogue...
                 </div>
             </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination">
+                <button class="btn-page disabled">&laquo; Précédent</button>
+                <button class="btn-page active">1</button>
+                <button class="btn-page">2</button>
+                <button class="btn-page">3</button>
+                <button class="btn-page">Suivant &raquo;</button>
+            </div>
         </main>
-        
     </div>
 
     <script src="js/auth.js"></script> 

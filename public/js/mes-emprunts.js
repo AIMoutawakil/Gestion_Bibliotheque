@@ -44,61 +44,69 @@ function fetchMyBorrowings() {
         });
 }
 
+// Fonction utilitaire pour formater la date en JJ/MM/AAAA
+function formaterDateFR(dateSQL) {
+    if (!dateSQL) return "";
+    const date = new Date(dateSQL);
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
 function displayBorrowings(borrowings) {
-    // CORRECTION : On utilise l'ID de la grille HTML, pas celui d'un tableau !
     const container = document.getElementById('my-borrowings-container');
-    if (!container) return; // Sécurité
+    container.innerHTML = '';
 
-    container.innerHTML = ''; // On vide le message de "Chargement..."
-
-    // Si l'utilisateur n'a rien emprunté
     if (borrowings.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                <h3 style="color: #1e293b; margin-bottom: 10px;">Aucun emprunt en cours</h3>
-                <p style="color: #64748b; margin-bottom: 20px;">Vous n'avez pas encore emprunté de livres.</p>
-                <a href="catalogue.html" class="btn-primary" style="display: inline-block; text-decoration: none;">Découvrir le catalogue</a>
-            </div>
-        `;
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: #64748b; width: 100%;">Vous n'avez aucun emprunt en cours.</div>`;
         return;
     }
 
-    // On parcourt les emprunts et on crée une CARTE pour chacun
     borrowings.forEach(b => {
-        // Formatage des dates
-        const dateEmprunt = new Date(b.borrow_date).toLocaleDateString('fr-FR');
-        const dateLimite = (b.due_date && b.due_date !== '0000-00-00') ? new Date(b.due_date).toLocaleDateString('fr-FR') : 'Non définie';
+        // 1. Gestion de l'image (avec sécurité si elle manque)
+        const imageUrl = b.image_url || b.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=' + encodeURIComponent(b.title);
 
-        // Gestion des couleurs des badges
-        let badgeClass = 'status-encours';
-        let badgeText = 'En cours';
+        // 2. Formatage des dates
+        const dateEmprunt = formaterDateFR(b.borrow_date);
+        const dateLimite = formaterDateFR(b.due_date);
 
-        if (b.status === 'RETOURNE') {
-            badgeClass = 'status-rendu';
-            badgeText = 'Rendu';
-        } else if (b.status === 'EN_RETARD') {
-            badgeClass = 'status-retard';
-            badgeText = 'En retard';
+        // 3. Gestion dynamique du statut (Couleurs du badge)
+        let badgeText = "En cours";
+        let badgeBg = "#e0e7ff"; // Fond violet très clair (comme sur ta photo)
+        let badgeColor = "#3730a3"; // Texte violet foncé
+        let dateColor = "#64748b"; // Couleur normale pour la date
+
+        if (b.status === 'EN_RETARD') {
+            badgeText = "En retard";
+            badgeBg = "#fee2e2"; // Fond rouge clair
+            badgeColor = "#991b1b"; // Texte rouge foncé
+            dateColor = "#dc2626"; // Date en rouge pour alerter
+        } else if (b.status === 'RENDU') {
+            badgeText = "Rendu";
+            badgeBg = "#dcfce7"; // Fond vert clair
+            badgeColor = "#166534"; // Texte vert foncé
         }
 
-        // Création de la carte HTML (Le même design que ton catalogue)
+        // 4. La structure HTML exacte de ta capture d'écran
         const cardHTML = `
-            <article class="book-card">
-                <header class="book-header" style="height: 200px; position: relative;">
-                    <img src="${b.image_url || 'https://placehold.co/400x600/eeeeee/31343C?text=' + encodeURIComponent(b.title)}" class="book-cover" style="width: 100%; height: 100%; object-fit: cover;">
-                    <span class="badge-category status-badge ${badgeClass}" style="position: absolute; top: 10px; right: 10px;">
+            <article style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; display: flex; flex-direction: column; transition: transform 0.2s;">
+                
+                <!-- LA MAGIE EST ICI : aspect-ratio: 2 / 3 donne exactement la forme du catalogue -->
+                <header style="width: 100%; aspect-ratio: 2 / 3; position: relative;">
+                    <img src="${imageUrl}" alt="${b.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <span style="position: absolute; top: 10px; right: 10px; background-color: ${badgeBg}; color: ${badgeColor}; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                         ${badgeText}
                     </span>
                 </header>
                 
-                <div class="book-body" style="padding: 15px;">
-                    <h3 class="book-title" style="font-size: 1.1rem; margin-bottom: 10px;">${b.title}</h3>
+                <!-- Zone de texte légèrement ajustée pour la nouvelle largeur -->
+                <div style="padding: 15px; flex-grow: 1; display: flex; flex-direction: column;">
+                    <h3 style="font-size: 1rem; color: #1e293b; margin-bottom: 12px; font-weight: 700; line-height: 1.3;">${b.title}</h3>
                     
-                    <div style="font-size: 0.85rem; color: #475569;">
-                        <p style="margin-bottom: 5px;"><strong>Emprunté le :</strong> ${dateEmprunt}</p>
-                        <p><strong>À rendre le :</strong> <span style="color: ${b.status === 'EN_RETARD' ? 'red' : 'inherit'};">${dateLimite}</span></p>
+                    <div style="font-size: 0.75rem; color: #64748b; line-height: 1.5; margin-top: auto;">
+                        <p style="margin: 0; padding-bottom: 5px; border-bottom: 1px solid #f1f5f9;"><strong>Emprunté le :</strong><br> ${dateEmprunt}</p>
+                        <p style="margin: 5px 0 0 0;"><strong>À rendre le :</strong><br> <span style="color: ${dateColor}; font-weight: ${b.status === 'EN_RETARD' ? 'bold' : 'normal'};">${dateLimite}</span></p>
                     </div>
                 </div>
+                
             </article>
         `;
         

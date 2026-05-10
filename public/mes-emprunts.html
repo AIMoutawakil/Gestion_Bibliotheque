@@ -40,15 +40,21 @@
         </div>
     </nav>
 
-        <div class="main-container" style="display: block; max-width: 1000px;">
-        <div class="content-header">
-            <h2>Mes livres empruntés</h2>
-        </div>
+    <!-- Dans mes-emprunts.html -->
+    <div class="main-container" style="display: block; max-width: 1000px; margin: 40px auto; padding: 0 20px;">
+    
+    <div class="content-header" style="margin-bottom: 30px;">
+        <h2 style="font-size: 1.8rem; color: #1e293b; font-weight: 800;">Mes livres empruntés</h2>
+    </div>
 
-        <div class="books-grid" id="my-borrowings-container">
-            <div class="loading-state">Chargement de vos emprunts...</div>
+    <!-- C'EST ICI QU'ON APPLIQUE LA GRILLE 👇 -->
+    <div class="borrowings-grid" id="my-borrowings-container">
+        <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">
+            Chargement de vos emprunts...
         </div>
-        </div>
+    </div>
+
+    </div>
 
     <script src="js/auth.js"></script>
     <script src="js/mes-emprunts.js"></script>

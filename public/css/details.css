@@ -1,0 +1,76 @@
+/* =========================================
+   1. FIL D'ARIANE (Breadcrumb)
+   ========================================= */
+.breadcrumb {
+    padding: 20px 0;
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+}
+.breadcrumb a { color: royalblue; text-decoration: none; transition: 0.2s; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { margin: 0 8px; color: #cbd5e1; }
+
+/* =========================================
+   2. SECTION PRINCIPALE (Hero Détails)
+   ========================================= */
+.details-hero {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* Colonne gauche: 320px, Colonne droite: le reste */
+    gap: 50px;
+    margin-bottom: 50px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    border: 1px solid #f1f5f9;
+}
+
+/* La Couverture */
+.details-cover-wrapper { position: relative; width: 100%; aspect-ratio: 2 / 3; }
+.details-cover {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* Ombre premium */
+}
+
+/* Les Infos (Droite) */
+.details-info { display: flex; flex-direction: column; }
+.details-title { font-size: 2.5rem; font-weight: 800; color: #0f172a; line-height: 1.1; margin-bottom: 10px; }
+.details-author { font-size: 1.2rem; color: #475569; margin-bottom: 25px; }
+
+/* Pastille Dynamique */
+.details-status { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; width: fit-content; margin-bottom: 30px; }
+.details-status.dispo { background: #dcfce7; color: #166534; }
+.details-status.indispo { background: #fee2e2; color: #991b1b; }
+
+/* Bouton Emprunter */
+.btn-emprunter {
+    background: royalblue; color: white; border: none; padding: 15px 30px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3); max-width: 300px; text-align: center; margin-bottom: 40px;
+}
+.btn-emprunter:hover { background: #3a5bd9; transform: translateY(-2px); }
+.btn-emprunter:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* Métadonnées (Grille discrète) */
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #f8fafc; padding: 25px; border-radius: 12px; }
+.meta-item { display: flex; flex-direction: column; }
+.meta-label { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+.meta-value { font-size: 1rem; color: #1e293b; font-weight: 500; }
+
+/* =========================================
+   3. SECTION DESCRIPTION & TAGS
+   ========================================= */
+.details-synopsis { margin-bottom: 60px; padding: 0 20px; }
+.details-synopsis h3 { font-size: 1.5rem; color: #1e293b; margin-bottom: 20px; }
+.details-synopsis p { font-size: 1.05rem; color: #475569; line-height: 1.8; margin-bottom: 25px; }
+
+.tags-container { display: flex; gap: 10px; flex-wrap: wrap; }
+.tag-pill { background: #e0e7ff; color: royalblue; padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.tag-pill:hover { background: royalblue; color: white; }
+
+/* Responsive Mobile */
+@media (max-width: 900px) {
+    .details-hero { grid-template-columns: 1fr; padding: 20px; }
+    .details-cover-wrapper { max-width: 250px; margin: 0 auto; }
+    .meta-grid { grid-template-columns: 1fr; }
+}
