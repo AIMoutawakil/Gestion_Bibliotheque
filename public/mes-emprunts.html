@@ -5,58 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Emprunts - Bibliothèque ISGA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/mes-emprunts.css">  
     
     <style>
-        /* Quelques petits ajustements spécifiques pour les badges d'emprunt */
-        .status-badge {
-            padding: 5px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: bold;
-        }
-        .status-encours { background-color: #e0e7ff; color: #3730a3; } /* Bleu */
-        .status-retard { background-color: #fee2e2; color: #991b1b; } /* Rouge */
-        .status-rendu { background-color: #dcfce7; color: #166534; } /* Vert */
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .search-bar { padding: 12px 20px; border-radius: 30px; border: 1px solid #cbd5e1; width: 100%; max-width: 400px; outline: none; font-size: 1rem; }
         
-        .empty-state {
-            text-align: center; padding: 60px 20px;
-            background: white; border-radius: 16px; border: 1px dashed #cbd5e1;
-            grid-column: 1 / -1; /* Prend toute la largeur */
-        }
+        .emprunt-card { display: flex; background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 20px; border-left: 8px solid transparent; align-items: center; padding: 15px; }
+        .emprunt-card img { width: 80px; height: 120px; object-fit: cover; border-radius: 6px; margin-right: 20px; }
+        .emprunt-info { flex-grow: 1; }
+        .emprunt-info h3 { margin: 0 0 5px 0; color: #1e293b; }
+        .emprunt-info p { margin: 0; color: #64748b; font-size: 0.9rem; }
+        
+        /* Les 3 couleurs de statut */
+        .status-vert { border-left-color: #22c55e; background-color: #f0fdf4; }
+        .status-jaune { border-left-color: #eab308; background-color: #fefce8; }
+        .status-rouge { border-left-color: #ef4444; background-color: #fef2f2; }
+        
+        .badge-texte { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; }
+        .badge-vert { background: #dcfce7; color: #166534; }
+        .badge-jaune { background: #fef08a; color: #854d0e; }
+        .badge-rouge { background: #fee2e2; color: #991b1b; animation: pulse 2s infinite; }
     </style>
 </head>
 <body class="bg-light">
 
     <nav class="navbar glass-effect">
-        <div class="nav-container">
-            <a class="nav-brand" href="catalogue.html">📚 Bibliothèque ISGA</a>
-            
-            <div class="nav-links">
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-wrap: wrap; gap: 20px;">
+            <a class="nav-brand" href="index.html" style="white-space: nowrap;">📚 Bibliothèque ISGA</a>
+            <div class="nav-links" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <a href="index.html">Accueil</a>
                 <a href="catalogue.html">Catalogue</a>
-                <a href="mes-emprunts.html" style="color: royalblue; font-weight: 600;">Mes emprunts</a>
+                <a href="mes-emprunts.html" class="active">Mes Emprunts</a>
+                <a href="a-propos.html">À propos</a>
+                <a href="aide.html">Aide</a>
             </div>
-
-            <div class="auth-zone" id="auth-zone">
+            <div class="auth-zone" id="auth-zone" style="margin-left: auto;">
+                <div style="display: inline-flex; align-items: center; gap: 15px;">
+                    <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
+                    <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
                 </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Dans mes-emprunts.html -->
-    <div class="main-container" style="display: block; max-width: 1000px; margin: 40px auto; padding: 0 20px;">
-    
-    <div class="content-header" style="margin-bottom: 30px;">
-        <h2 style="font-size: 1.8rem; color: #1e293b; font-weight: 800;">Mes livres empruntés</h2>
-    </div>
+    <div class="container">
+        <div class="header-section">
+            <h1 style="color: #1e293b; margin: 0;">📖 Mes Emprunts</h1>
+            <input type="text" id="searchMyBooks" class="search-bar" placeholder="🔍 Rechercher un de mes livres...">
+        </div>
 
-    <!-- C'EST ICI QU'ON APPLIQUE LA GRILLE 👇 -->
-    <div class="borrowings-grid" id="my-borrowings-container">
-        <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">
-            Chargement de vos emprunts...
+        <div id="my-borrowings-list">
+            <div style="text-align: center; padding: 50px; color: #64748b;">Chargement de vos emprunts...</div>
         </div>
     </div>
 
-    </div>
-
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js"></script> 
     <script src="js/mes-emprunts.js"></script>
 </body>
 </html>

@@ -1,135 +1,178 @@
-// public/js/details.js
+// Variable globale pour mémoriser le stock du livre affiché
+let maxStockGlobal = 0; 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Récupérer l'ID dans l'URL (ex: details.html?id=3)
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('id');
 
     if (!bookId) {
-        // Redirection sécurité si aucun ID n'est fourni
         window.location.href = 'catalogue.html';
         return;
     }
 
-    // 2. Lancer la requête vers la base de données
     fetchBookDetails(bookId);
 });
 
 // --- REQUÊTE POUR RÉCUPÉRER LE LIVRE ---
 function fetchBookDetails(id) {
-    fetch('index.php/api/books/' + id)
+    const timestamp = new Date().getTime(); 
+    fetch(`index.php/api/books?t=${timestamp}`)
         .then(response => {
-            if (!response.ok) throw new Error('Livre non trouvé');
+            if (!response.ok) throw new Error('Erreur de chargement');
             return response.json();
         })
-        .then(book => {
-            // On envoie les données du livre à notre belle fonction d'affichage
+        .then(books => {
+            const book = books.find(b => (b.id == id || b.book_id == id));
+            if (!book) throw new Error('Livre non trouvé dans le catalogue');
             afficherDetailsLivre(book);
         })
         .catch(error => {
             console.error(error);
-            document.getElementById('book-title').textContent = "Erreur de chargement";
-            document.getElementById('book-synopsis').textContent = "Impossible de charger les détails de ce livre. Vérifiez votre connexion.";
+            document.getElementById('book-title').textContent = "Livre introuvable";
+            document.getElementById('book-synopsis').textContent = "Impossible de charger les détails.";
         });
 }
 
-// --- AFFICHAGE DANS LE NOUVEAU DESIGN ---
+// --- AFFICHAGE DANS LE DESIGN ---
 function afficherDetailsLivre(book) {
-    // Gestion des données manquantes (au cas où la BDD n'a pas tout)
     const imageUrl = book.image_url || book.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=Image';
-    const description = book.description || book.synopsis || "Aucune description disponible pour ce livre.";
-    const category = book.category_name || book.category || "Non classé";
+    const category = book.category_name || book.categoryName || "Général";
     const title = book.title || "Titre inconnu";
     const author = book.author || "Auteur inconnu";
+    const idLivre = book.id || book.book_id;
 
-    // 1. Le Fil d'Ariane
     document.getElementById('bread-category').textContent = category;
     document.getElementById('bread-title').textContent = title;
-
-    // 2. Infos principales
     document.getElementById('book-cover').src = imageUrl;
     document.getElementById('book-title').textContent = title;
     document.getElementById('book-author').textContent = author;
 
-    // 3. Les petites métadonnées
-    document.getElementById('meta-year').textContent = book.year || "-";
-    document.getElementById('meta-pages').textContent = book.pages || "-";
-    document.getElementById('meta-lang').textContent = book.language || "Français";
-    document.getElementById('meta-isbn').textContent = book.isbn || "-";
-    
-    // 4. Le résumé
-    document.getElementById('book-synopsis').textContent = description;
-
-    // 5. GESTION DU BOUTON ET DU STOCK
-    const statusDiv = document.getElementById('book-status');
-    const btnAction = document.getElementById('btn-action');
-    const userJson = sessionStorage.getItem('user'); // Vérifier si l'étudiant est connecté
-
-    // Combien en reste-t-il ?
-    const stockDispo = book.availableQuantity !== undefined ? parseInt(book.availableQuantity) : parseInt(book.stock || 0);
-    const idLivre = book.id || book.book_id;
-
-    if (book.isAvailable || stockDispo > 0) {
-        // LE LIVRE EST LÀ
-        statusDiv.className = "details-status dispo";
-        statusDiv.innerHTML = `🟢 Disponible (${stockDispo} exemplaires)`;
-
-        if (userJson) {
-            // Étudiant connecté : Bouton actif !
-            btnAction.textContent = "Emprunter ce livre";
-            btnAction.disabled = false;
-            btnAction.style.background = "royalblue";
-            btnAction.onclick = () => emprunterLivre(idLivre);
-        } else {
-            // Pas connecté : On grise le bouton
-            btnAction.textContent = "Connectez-vous pour emprunter";
-            btnAction.disabled = true;
-            btnAction.style.background = "#94a3b8"; 
-        }
+    const year = book.year || book.annee_publication;
+    if (year && year.toString().trim() !== "") {
+        document.getElementById('tag-year').style.display = 'inline-block';
+        document.getElementById('meta-year').textContent = year;
     } else {
-        // RUPTURE DE STOCK
-        statusDiv.className = "details-status indispo";
-        statusDiv.innerHTML = `🔴 Indisponible (Rupture de stock)`;
-        btnAction.textContent = "Livre indisponible";
-        btnAction.disabled = true;
-        btnAction.style.background = "#ef4444"; // Rouge pour bien montrer l'indisponibilité
+        document.getElementById('tag-year').style.display = 'none';
     }
 
-    // 6. Les petits Tags en bas (Optionnel)
-    const tagsContainer = document.getElementById('book-tags');
-    if (tagsContainer) {
-        tagsContainer.innerHTML = `<span class="tag-pill">${category}</span>`;
+    const pages = book.pages;
+    if (pages && pages.toString().trim() !== "") {
+        document.getElementById('tag-pages').style.display = 'inline-block';
+        document.getElementById('meta-pages').textContent = pages;
+    } else {
+        document.getElementById('tag-pages').style.display = 'none';
+    }
+
+    const language = book.language_name || book.languageName;
+    if (language && language.trim() !== "") {
+        document.getElementById('tag-lang').style.display = 'inline-block';
+        document.getElementById('meta-lang').textContent = language;
+    } else {
+        document.getElementById('tag-lang').style.display = 'none';
+    }
+
+    const isbn = book.isbn;
+    if (isbn && isbn.trim() !== "" && isbn !== "N/A") {
+        document.getElementById('tag-isbn').style.display = 'inline-block';
+        document.getElementById('meta-isbn').textContent = isbn;
+    } else {
+        document.getElementById('tag-isbn').style.display = 'none';
+    }
+
+    const description = book.description || book.synopsis;
+    if (description && description.trim() !== "") {
+        document.getElementById('title-synopsis').style.display = 'block';
+        document.getElementById('book-synopsis').style.display = 'block';
+        document.getElementById('book-synopsis').textContent = description;
+    } else {
+        document.getElementById('title-synopsis').style.display = 'none';
+        document.getElementById('book-synopsis').style.display = 'none';
+    }
+
+    const statusDiv = document.getElementById('book-status');
+    const userJson = sessionStorage.getItem('user'); 
+
+    if(statusDiv) statusDiv.style.display = 'none';
+
+    maxStockGlobal = book.available_quantity !== undefined ? parseInt(book.available_quantity) : parseInt(book.totalQuantity || 0);
+
+    mettreAJourInterfaceAction(idLivre, userJson);
+}
+
+// --- MISE À JOUR DE L'INTERFACE D'ACTION ---
+function mettreAJourInterfaceAction(idLivre, userJson) {
+    const controlsDiv = document.getElementById('action-controls');
+
+    if (maxStockGlobal > 0) {
+        if (userJson) {
+            // Étudiant connecté : Design propre sans + ni -
+            controlsDiv.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #64748b; font-weight: 600;">Stock restant : </span>
+                    <strong id="stock-display" style="color: #1e293b; font-size: 1.1rem;">${maxStockGlobal}</strong>
+                </div>
+                <button id="btn-action" class="btn-action" style="width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold; background: royalblue; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="emprunterLivre(${idLivre})">Confirmer l'emprunt</button>
+            `;
+        } else {
+            // Pas connecté
+            controlsDiv.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #64748b; font-weight: 600;">Stock restant : </span>
+                    <strong style="color: #1e293b; font-size: 1.1rem;">${maxStockGlobal}</strong>
+                </div>
+                <button class="btn-action" style="background: #94a3b8; width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="window.location.href='login.html'">Connectez-vous pour emprunter</button>
+            `;
+        }
+    } else {
+        // Rupture de stock
+        controlsDiv.innerHTML = `
+            <div style="margin-bottom: 20px; color: #ef4444; font-weight: 600;">
+                Rupture de stock
+            </div>
+            <button class="btn-action" style="background: #cbd5e1; width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: not-allowed;" disabled>Livre indisponible</button>
+        `;
     }
 }
 
-// --- FONCTION POUR EMPRUNTER (Ton API) ---
+// --- FONCTION POUR EMPRUNTER (SÉCURISÉE) ---
 function emprunterLivre(bookId) {
-    // On change le texte du bouton pendant que ça charge pour éviter les doubles clics
     const btnAction = document.getElementById('btn-action');
-    btnAction.textContent = "Emprunt en cours...";
+    
+    // On force la quantité à 1 !
+    const qtyAEmprunter = 1; 
+
+    // Bouton en mode "Chargement"
+    btnAction.textContent = "⏳ Emprunt en cours...";
     btnAction.disabled = true;
+    btnAction.style.opacity = "0.7";
 
     fetch('index.php/api/borrow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ book_id: bookId })
+        body: JSON.stringify({ 
+            book_id: bookId,
+            quantity: qtyAEmprunter 
+        })
     })
-    .then(response => response.json().then(data => ({ status: response.status, body: data })))
-    .then(result => {
-        if (result.status === 200 || result.status === 201) {
-            alert("🎉 Succès : " + (result.body.message || "Livre emprunté avec succès !"));
-            // On recharge la page pour voir le stock diminuer !
-            window.location.reload(); 
-        } else {
-            alert("❌ Erreur : " + result.body.erreur);
-            // On remet le bouton à la normale s'il y a eu une erreur
-            btnAction.textContent = "Emprunter ce livre";
-            btnAction.disabled = false;
-        }
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.erreur || "Erreur d'emprunt");
+        return data;
+    })
+    .then(data => {
+        alert(`🎉 Succès : Livre emprunté !\n⏳ Vous avez 15 jours pour le restituer.`);
+        
+        // On diminue le stock en temps réel sur la page
+        maxStockGlobal -= qtyAEmprunter;
+        
+        const userJson = sessionStorage.getItem('user'); 
+        mettreAJourInterfaceAction(bookId, userJson);
+
     })
     .catch(error => {
-        alert("❌ Erreur réseau lors de l'emprunt.");
-        btnAction.textContent = "Emprunter ce livre";
+        alert("❌ Erreur : " + error.message);
+        btnAction.textContent = "Confirmer l'emprunt";
         btnAction.disabled = false;
+        btnAction.style.opacity = "1";
     });
 }

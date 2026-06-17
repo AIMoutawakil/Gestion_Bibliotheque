@@ -10,25 +10,29 @@ class BookController {
         $this->bookRepository = new BookRepository();
     }
 
-public function getAllBooks(): void {
+    public function getAllBooks(): void {
         $books = $this->bookRepository->getAllBooks();
         $booksArray = [];
         
         foreach ($books as $book) {
             $booksArray[] = [
                 'id' => $book->getId(),
+                'book_id' => $book->getId(),
                 'title' => $book->getTitle(),
                 'author' => $book->getAuthor(),
                 'description' => $book->getDescription(),
                 'totalQuantity' => $book->getTotalQuantity(),
+                'total_quantity' => $book->getTotalQuantity(),
                 'availableQuantity' => $book->getAvailableQuantity(),
+                'available_quantity' => $book->getAvailableQuantity(),
                 'isAvailable' => $book->getAvailableQuantity() > 0,
                 'categoryId' => $book->getCategoryId(),
                 'categoryName' => $book->getCategoryName(),
                 'imageUrl' => $book->getImageUrl(),
-                // 👇 LES DEUX LIGNES MANQUANTES SONT ICI 👇
+                'image_url' => $book->getImageUrl(),
                 'languageId' => $book->getLanguageId(), 
-                'languageName' => $book->getLanguageName()
+                'languageName' => $book->getLanguageName(),
+                'isbn' => method_exists($book, 'getIsbn') ? $book->getIsbn() : null
             ];
         }
         echo json_encode($booksArray);
@@ -40,18 +44,22 @@ public function getAllBooks(): void {
         if ($book) {
             echo json_encode([
                 'id' => $book->getId(),
+                'book_id' => $book->getId(),
                 'title' => $book->getTitle(),
                 'author' => $book->getAuthor(),
                 'description' => $book->getDescription(),
                 'totalQuantity' => $book->getTotalQuantity(),
+                'total_quantity' => $book->getTotalQuantity(),
                 'availableQuantity' => $book->getAvailableQuantity(),
+                'available_quantity' => $book->getAvailableQuantity(),
                 'isAvailable' => $book->getAvailableQuantity() > 0,
                 'categoryId' => $book->getCategoryId(),
                 'categoryName' => $book->getCategoryName(),
                 'imageUrl' => $book->getImageUrl(),
-                // 👇 AJOUTE ÇA ICI AUSSI 👇
+                'image_url' => $book->getImageUrl(),
                 'languageId' => $book->getLanguageId(),
-                'languageName' => $book->getLanguageName()
+                'languageName' => $book->getLanguageName(),
+                'isbn' => method_exists($book, 'getIsbn') ? $book->getIsbn() : null
             ]);
         } else {
             http_response_code(404);
@@ -59,33 +67,27 @@ public function getAllBooks(): void {
         }
     }
 
-// --- FONCTION MAGIQUE : Sauvegarder l'image ---
     private function processImageUpload(?string $imageData): ?string {
         if ($imageData && strpos($imageData, 'data:image') === 0) {
-            // 1. On sépare les données du format
             $parts = explode(',', $imageData);
             $fileData = base64_decode($parts[1]);
             
-            // 2. On crée un nom unique pour ne pas écraser les autres photos
             $fileName = uniqid('book_') . '.jpg'; 
             $uploadDir = __DIR__ . '/../../public/images/';
             
-            // 3. On crée le dossier images/ s'il n'existe pas encore
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
             
-            // 4. On sauvegarde le vrai fichier sur le disque dur !
             file_put_contents($uploadDir . $fileName, $fileData);
-            
-            // 5. On retourne le chemin pour la base de données
             return 'images/' . $fileName;
         }
-        return $imageData; // Si ce n'est pas un fichier (ex: ancienne URL), on laisse tel quel
+        return $imageData; 
     }
 
-public function createBook(): void {
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
+    public function createBook(): void {
+        $role = $_SESSION['user_role'] ?? $_SESSION['role'] ?? '';
+        if ($role !== 'ADMIN') {
             http_response_code(403); echo json_encode(["erreur" => "Accès refusé."]); return;
         }
 
@@ -96,61 +98,67 @@ public function createBook(): void {
         }
 
         // =========================================================
-        // 🪄 LE TOUR DE MAGIE POUR LA NOUVELLE CATÉGORIE
+        // 🪄 MAGIE AVEC CAPTURE D'ERREUR POUR LA CATÉGORIE
         // =========================================================
         if ($data['categoryId'] === 'NEW') {
             if (empty($data['newCategoryName'])) {
-                http_response_code(400); 
-                echo json_encode(["erreur" => "Le nom de la nouvelle catégorie est requis."]); 
-                return;
+                http_response_code(400); echo json_encode(["erreur" => "Le nom de la nouvelle catégorie est requis."]); return;
             }
-            
-            // On appelle la fonction pour créer la catégorie dans la base
-            $nouvelId = $this->bookRepository->addCategory($data['newCategoryName']);
-            
-            // On remplace le mot "NEW" par le vrai chiffre (l'ID)
-            $data['categoryId'] = $nouvelId;
+            try {
+                $nouvelId = $this->bookRepository->addCategory($data['newCategoryName']);
+                $data['categoryId'] = $nouvelId;
+            } catch (PDOException $e) {
+                http_response_code(500); echo json_encode(["erreur" => "Erreur SQL Catégorie: " . $e->getMessage()]); return;
+            }
         }
 
-        // 🪄 MAGIE POUR LA NOUVELLE LANGUE
-        if ($data['languageId'] === 'NEW') {
+        // 🪄 MAGIE AVEC CAPTURE D'ERREUR POUR LA LANGUE
+        if (isset($data['languageId']) && $data['languageId'] === 'NEW') {
             if (empty($data['newLanguageName'])) {
                 http_response_code(400); echo json_encode(["erreur" => "Nom de la langue requis."]); return;
             }
-            $nouvelIdLangue = $this->bookRepository->addLanguage($data['newLanguageName']);
-            $data['languageId'] = $nouvelIdLangue;
+            try {
+                $nouvelIdLangue = $this->bookRepository->addLanguage($data['newLanguageName']);
+                $data['languageId'] = $nouvelIdLangue;
+            } catch (PDOException $e) {
+                http_response_code(500); echo json_encode(["erreur" => "Erreur SQL Langue: " . $e->getMessage()]); return;
+            }
         }   
         // =========================================================
 
-        // On traite l'image uploadée
         $finalImageUrl = $this->processImageUpload($data['imageUrl'] ?? null);
-
-        // On récupère le résumé (synopsis) envoyé par le formulaire
         $description = $data['synopsis'] ?? '';
+        $isbn = $data['isbn'] ?? null;
 
-        // Création de l'objet Book (le categoryId est maintenant garanti d'être un chiffre)
-            $book = new Book(
+        $book = new Book(
             $data['title'], 
             $data['author'], 
-            $data['synopsis'] ?? '', 
+            $description, 
             (int)$data['totalQuantity'], 
             (int)$data['totalQuantity'], 
             null, 
             (int)$data['categoryId'], 
             null, 
             $finalImageUrl,
-            (int)$data['languageId'] 
+            isset($data['languageId']) ? (int)$data['languageId'] : null,
+            null,
+            $isbn  
         );
 
-        if ($this->bookRepository->addBook($book)) {
-            http_response_code(201); echo json_encode(["message" => "Livre ajouté avec succès !"]);
-        } else {
-            http_response_code(500); echo json_encode(["erreur" => "Erreur de base de données."]);
+        try {
+            if ($this->bookRepository->addBook($book, $isbn)) {
+                http_response_code(201); echo json_encode(["message" => "Livre ajouté avec succès !"]);
+            } else {
+                http_response_code(500); echo json_encode(["erreur" => "Erreur inconnue lors de l'ajout en base de données."]);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500); echo json_encode(["erreur" => "Erreur SQL Livre: " . $e->getMessage()]);
         }
     }
-    // Supprimer (Réservé Admin)
+
     public function deleteBook(int $id): void {
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
+        $role = $_SESSION['user_role'] ?? $_SESSION['role'] ?? '';
+        if ($role !== 'ADMIN') {
             http_response_code(403); echo json_encode(["erreur" => "Accès refusé."]); return;
         }
 
@@ -158,27 +166,51 @@ public function createBook(): void {
             $this->bookRepository->deleteBook($id);
             echo json_encode(["message" => "Livre supprimé avec succès !"]);
         } catch (PDOException $e) {
-            // Sécurité SQL : Si le livre a déjà été emprunté, MySQL bloquera la suppression (Clé étrangère).
             http_response_code(400);
             echo json_encode(["erreur" => "Impossible de supprimer ce livre car il existe dans l'historique des emprunts."]);
         }
     }
 
-    // Modifier (Réservé Admin)
     public function updateBook(int $id): void {
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
+        $role = $_SESSION['user_role'] ?? $_SESSION['role'] ?? '';
+        if ($role !== 'ADMIN') {
             http_response_code(403); echo json_encode(["erreur" => "Accès refusé."]); return;
         }
-
         $data = json_decode(file_get_contents("php://input"), true);
         
-        // On traite l'image uploadée (ou on garde l'ancienne)
+        try {
+            if ($data['categoryId'] === 'NEW' && !empty($data['newCategoryName'])) {
+                $data['categoryId'] = $this->bookRepository->addCategory($data['newCategoryName']);
+            }
+            if (isset($data['languageId']) && $data['languageId'] === 'NEW' && !empty($data['newLanguageName'])) {
+                $data['languageId'] = $this->bookRepository->addLanguage($data['newLanguageName']);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500); echo json_encode(["erreur" => "Erreur SQL lors de l'ajout de la catégorie/langue: " . $e->getMessage()]); return;
+        }
+
         $finalImageUrl = $this->processImageUpload($data['imageUrl'] ?? null);
+        $description = $data['synopsis'] ?? '';
+        $isbn = $data['isbn'] ?? null;
         
-        if ($this->bookRepository->updateBook($id, $data['title'], $data['author'], (int)$data['categoryId'], (int)$data['totalQuantity'], $finalImageUrl ?? '')) {
-            echo json_encode(["message" => "Livre mis à jour !"]);
-        } else {
-            http_response_code(500); echo json_encode(["erreur" => "Erreur lors de la modification."]);
+        try {
+            if ($this->bookRepository->updateBook(
+                $id, 
+                $data['title'], 
+                $data['author'], 
+                $description, 
+                (int)$data['categoryId'], 
+                isset($data['languageId']) ? (int)$data['languageId'] : 1, 
+                (int)$data['totalQuantity'], 
+                $finalImageUrl ?? '',
+                $isbn
+            )) {
+                echo json_encode(["message" => "Livre mis à jour !"]);
+            } else {
+                http_response_code(500); echo json_encode(["erreur" => "Erreur lors de la modification."]);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500); echo json_encode(["erreur" => "Erreur SQL Modification: " . $e->getMessage()]);
         }
     }
 }

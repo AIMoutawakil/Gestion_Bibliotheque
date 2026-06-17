@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Étudiants & Messages - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-etudiants.css">
+</head>
+<body>
+    <div class="admin-layout">
+        
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                Admin ISGA
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="admin-dashboard.html">📊 Tableau de bord</a></li>
+                <li><a href="admin-livres.html">📚 Gestion des Livres</a></li>
+                <li><a href="admin-emprunts.html">🔄 Gestion des Emprunts</a></li>
+                <li><a href="admin-etudiants.html" class="active">🎓 Gestion des Étudiants</a></li>
+                
+                <div class="menu-divider"></div>
+                
+                <li><a href="catalogue.html">🌐 Voir le catalogue</a></li>
+                <li><a href="#" onclick="logout()" style="color: #fca5a5;">🚪 Déconnexion</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <div style="margin-bottom: 30px;">
+                <h1 style="color: #1e293b; font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;">Espace Contrôle & Messages</h1>
+                <p style="color: #64748b; font-size: 0.95rem;">Supervisez les comptes des étudiants et répondez à leurs demandes de support.</p>
+            </div>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('students')">👥 Profils Étudiants</button>
+                <button class="tab-btn" onclick="switchTab('messages')">📩 Messages Reçus (<span id="msg-count">0</span>)</button>
+            </div>
+
+            <div id="students-tab" class="tab-content active">
+                <div class="controls-row">
+                    <div class="search-wrapper">
+                        <input type="text" id="searchStudent" placeholder="Rechercher un étudiant par nom ou email...">
+                    </div>
+                </div>
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Email Académique</th>
+                            <th style="text-align: center;">Total Historique</th> <th style="text-align: center;">Emprunts en cours</th>
+                            <th style="text-align: center;">Livres en retard</th>
+                            <th>Statut Global</th>
+                        </tr>
+                    </thead>
+                        <tbody id="students-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="messages-tab" class="tab-content">
+                <div class="controls-row">
+                    <div class="search-wrapper">
+                        <input type="text" id="searchMessage" placeholder="Filtrer les messages...">
+                    </div>
+                </div>
+                <div id="messages-container">
+                    </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin-etudiants.js"></script>
+</body>
+</html>

@@ -1,34 +1,14 @@
 // public/js/auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    const authZone = document.getElementById('auth-zone');
-    const userJson = sessionStorage.getItem('user');
+    // 1. Mettre à jour la barre de navigation
+    updateNavbar();
 
-    if (authZone) {
-        if (userJson) {
-            const user = JSON.parse(userJson);
-            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=0D8ABC&color=fff&rounded=true&size=35`;
-            
-            // NOUVEAU : On prépare un bouton d'administration (vide par défaut)
-            let boutonAdmin = '';
-            // Si c'est un ADMIN, on remplit le bouton
-            if (user.role === 'ADMIN') {
-                boutonAdmin = `<a href="admin.html" class="btn btn-warning btn-sm me-2 text-dark fw-bold">⚙️ Administration</a>`;
-            }
-
-            authZone.innerHTML = `
-            <div class="user-profile">
-                <div class="avatar">${initials}</div>
-                <span class="user-name">${user.name}</span> 
-            </div>
-            <button onclick="logout()" class="btn-logout">Déconnexion</button>
-        `;
-        } else {
-            authZone.innerHTML = `<a href="login.html" class="btn btn-outline-light">Connexion</a>`;
-        }
+    // 2. Vérifier les retards SEULEMENT si l'utilisateur est connecté
+    if (sessionStorage.getItem('user')) {
+        verifierEtAfficherRetard();
     }
 });
-// Dans ton fichier auth.js ou l'endroit où tu gères la session
 
 function updateNavbar() {
     const authZone = document.getElementById('auth-zone');
@@ -40,46 +20,91 @@ function updateNavbar() {
         // Utilisateur connecté
         const user = JSON.parse(userJson);
         
-        // On récupère les initiales (ex: "Alice Dupont" -> "AD")
+        // Calcul des initiales (ex: "Mostapha Moutawakil" -> "MM")
         const nameParts = user.name.split(' ');
         let initials = nameParts[0].charAt(0).toUpperCase();
         if (nameParts.length > 1) {
             initials += nameParts[1].charAt(0).toUpperCase();
         }
 
+        // Bouton d'administration (Corrigé pour pointer vers admin-dashboard.html)
+        let boutonAdmin = '';
+        if (user.role === 'ADMIN') {
+            boutonAdmin = `<a href="admin-dashboard.html" style="background: #eab308; color: #1e293b; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-right: 15px; font-size: 0.9rem;">⚙️ Administration</a>`;
+        }
+
+        // Injection du HTML (Avatar + Nom + Boutons)
         authZone.innerHTML = `
-            <div class="user-profile">
-                <div class="avatar">${initials}</div>
-                <span class="user-name">${user.name}</span>
+            <div style="display: flex; align-items: center;">
+                ${boutonAdmin}
+                <div class="user-profile" style="display: flex; align-items: center; gap: 10px; margin-right: 15px;">
+                    <div class="avatar" style="background: royalblue; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem;">${initials}</div>
+                    <span class="user-name" style="font-weight: 600; color: #1e293b;">${user.name}</span>
+                </div>
+                <button onclick="logout()" class="btn-logout" style="border: none; background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;">Déconnexion</button>
             </div>
-            <button onclick="logout()" class="btn-logout">Déconnexion</button>
         `;
     } else {
         // Utilisateur non connecté
         authZone.innerHTML = `
-            <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none; margin-right: 15px;">Connexion</a>
-            <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
+            <div style="display: inline-flex; align-items: center; gap: 15px;">
+                <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
+                <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
+            </div>
         `;
     }
 }
 
-// Assure-toi d'appeler cette fonction au chargement !
-document.addEventListener('DOMContentLoaded', updateNavbar);
-
 function logout() {
-    // 1. On efface ce qui est stocké dans le navigateur
     sessionStorage.clear();
     localStorage.clear();
     
-    // 2. On attend que le PHP détruise la session, PUIS on redirige
-    // CORRECTION du chemin : on ajoute index.php/api/logout pour être sûr
     fetch('index.php/api/logout', { method: 'POST' })
         .then(() => {
-            // 3. On redirige SEULEMENT quand le serveur a répondu
             window.location.href = 'login.html';
         })
         .catch(err => {
-            // Par sécurité, on redirige quand même en cas de problème réseau
             window.location.href = 'login.html';
         });
+}
+
+// ========================================================
+// 🚨 DÉTECTEUR AUTOMATIQUE DE RETARDS
+// ========================================================
+function verifierEtAfficherRetard() {
+    const timestamp = new Date().getTime();
+    fetch(`index.php/api/check-retards?t=${timestamp}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Erreur serveur");
+            return response.json();
+        })
+        .then(data => {
+            if (data.retards > 0) {
+                afficherBandeauRouge(data.retards);
+            }
+        })
+        .catch(error => console.error("Impossible de vérifier les retards :", error));
+}
+
+function afficherBandeauRouge(nbRetards) {
+    const bandeau = document.createElement('div');
+    bandeau.style.backgroundColor = '#ef4444'; 
+    bandeau.style.color = 'white';
+    bandeau.style.textAlign = 'center';
+    bandeau.style.padding = '12px 20px';
+    bandeau.style.fontWeight = '700';
+    bandeau.style.fontSize = '1.05rem';
+    bandeau.style.position = 'sticky';
+    bandeau.style.top = '0'; 
+    bandeau.style.zIndex = '9999'; 
+    bandeau.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.4)';
+    bandeau.style.letterSpacing = '0.5px';
+    
+    const pluriel = nbRetards > 1 ? 's' : '';
+    bandeau.innerHTML = `
+        <span style="font-size: 1.2rem; margin-right: 10px;">⚠️</span> 
+        ALERTE : Vous avez <u>${nbRetards} livre${pluriel} en retard</u> ! Vos droits d'emprunt sont suspendus jusqu'à restitution.
+    `;
+
+    document.body.insertBefore(bandeau, document.body.firstChild);
 }

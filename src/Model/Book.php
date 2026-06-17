@@ -13,6 +13,7 @@ class Book implements \JsonSerializable {
     private ?string $imageUrl; 
     private ?int $languageId;
     private ?string $languageName;
+    private ?string $isbn;
 
     public function __construct(
         string $title,
@@ -25,7 +26,8 @@ class Book implements \JsonSerializable {
         ?string $categoryName = null,
         ?string $imageUrl = null ,
         ?int $languageId = null,
-        ?string $languageName = null
+        ?string $languageName = null,
+        ?string $isbn = null
     ) {
         $this->title = $title;
         $this->author = $author;
@@ -38,6 +40,7 @@ class Book implements \JsonSerializable {
         $this->imageUrl = $imageUrl; 
         $this->languageId = $languageId;
         $this->languageName = $languageName;
+        $this->isbn = $isbn;
     }
 
     // Getters
@@ -52,6 +55,7 @@ class Book implements \JsonSerializable {
     public function getImageUrl(): ?string { return $this->imageUrl; } 
     public function getLanguageId(): ?int { return $this->languageId; }
     public function getLanguageName(): ?string { return $this->languageName; }
+    public function getIsbn(): ?string { return $this->isbn;}
     
 
     // 👇 3. MODIFIE CETTE FONCTION 👇
@@ -68,7 +72,8 @@ class Book implements \JsonSerializable {
             'imageUrl' => $this->imageUrl,
             'languageId' => $this->languageId,
             'languageName' => $this->languageName,
+            'isbn' => $this->isbn,
         ];
     }
 }
-    
+        

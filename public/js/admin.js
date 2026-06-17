@@ -34,9 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     author: document.getElementById('author').value,
                     categoryId: document.getElementById('category').value, 
                     newCategoryName: document.getElementById('newCategoryName').value,
-                    languageId: document.getElementById('language').value, // NOUVEAU
-                    newLanguageName: document.getElementById('newLanguageName').value, // NOUVEAU
+                    languageId: document.getElementById('language').value, 
+                    newLanguageName: document.getElementById('newLanguageName').value,
+                    
+                    // CORRECTION ICI : On envoie les 3 formats possibles pour la quantité
                     totalQuantity: document.getElementById('quantity').value,
+                    quantity: document.getElementById('quantity').value,
+                    total_quantity: document.getElementById('quantity').value,
+                    
                     isbn: document.getElementById('isbn').value,
                     synopsis: document.getElementById('synopsis').value,
                     imageUrl: finalImageBase64 
@@ -48,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch(fetchUrl, {
                     method: fetchMethod,
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'same-origin',
                     body: JSON.stringify(bookData)
                 })
                 .then(response => response.json().then(data => ({ status: response.status, body: data })))
@@ -193,12 +199,10 @@ function afficherTableauLivres(listeLivres) {
         return;
     }
 
-    // 💡 LE DICTIONNAIRE DE TRADUCTION DES CATÉGORIES
     const categoriesMap = {
         1: "Informatique", 2: "Roman", 3: "Sciences", 4: "Histoire", 5: "Philosophie"
     };
 
-    // 💡 NOUVEAU : LE DICTIONNAIRE DES LANGUES
     const languagesMap = {
         1: "Français",
         2: "Anglais",
@@ -209,14 +213,10 @@ function afficherTableauLivres(listeLivres) {
         const imageUrl = book.imageUrl || book.image_url || 'https://placehold.co/400x600/eeeeee/31343C?text=Livre';
         const stockDispo = book.available_quantity !== undefined ? book.available_quantity : book.totalQuantity;
         
-        // Les IDs
         const catId = book.categoryId || book.category_id || book.category;
         const langId = book.languageId || book.language_id || book.language;
 
-        // Les Traductions (On utilise la Map si le serveur ne renvoie pas le nom !)
         const categoryLabel = book.categoryName || book.category_name || categoriesMap[catId] || catId;
-        
-        // 🚨 LA LIGNE À CORRIGER EST ICI 🚨
         const langLabel = book.languageName || book.language_name || languagesMap[langId] || "Français";        
         
         const stockStyle = stockDispo <= 0 ? 'color: #ef4444;' : (stockDispo == 1 ? 'color: #f59e0b;' : 'color: #10b981;');
@@ -224,12 +224,14 @@ function afficherTableauLivres(listeLivres) {
         const bookId = book.id || book.book_id;
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><img src="${imageUrl}" alt="Couverture" style="width: 40px; height: 60px; object-fit: cover;"></td>
-            <td>${book.title}</td>
-            <td>${book.author}</td>
+            <td><img src="${imageUrl}" alt="Couverture" style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
+            <td>
+                <strong>${book.title}</strong><br>
+                <span style="font-size: 0.85rem; color: #64748b;">${book.author}</span>
+            </td>
             <td>${categoryLabel}</td>
             <td>${langLabel}</td>
-            <td style="${stockStyle}">${stockDispo}</td>
+            <td style="${stockStyle}; font-weight: bold;">${stockDispo}</td>
             <td>
                 <button onclick="preparerModification(${bookId})" style="padding: 4px 8px; margin-right: 5px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Modifier</button>
                 <button onclick="supprimerLivre(${bookId})" style="padding: 4px 8px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Supprimer</button>
@@ -238,9 +240,6 @@ function afficherTableauLivres(listeLivres) {
         tbody.appendChild(row);
     });
 }
-
-    
-
 
 function afficherPagination(totalPages) {
     const paginationDiv = document.getElementById('admin-pagination');
@@ -264,21 +263,29 @@ function afficherPagination(totalPages) {
 // =========================================================
 
 function preparerModification(id) {
-    const book = adminCatalog.find(b => (b.id === id || b.book_id === id));
-    if(!book) return;
+    // 💡 CORRECTION ICI : On convertit en String pour éviter le blocage (Texte vs Nombre)
+    const book = adminCatalog.find(b => String(b.id) === String(id) || String(b.book_id) === String(id));
+    
+    // Ajout d'un log et d'une alerte pour le debug
+    if(!book) {
+        console.error("Livre introuvable dans adminCatalog pour l'ID :", id);
+        alert("Erreur : Impossible de charger les données de ce livre.");
+        return;
+    }
 
     // Remplir les champs du formulaire
-    document.getElementById('title').value = book.title;
-    document.getElementById('author').value = book.author;
+    document.getElementById('title').value = book.title || '';
+    document.getElementById('author').value = book.author || '';
     document.getElementById('category').value = book.categoryId || book.category_id || book.category || '';
     
-    // NOUVEAU : Pré-remplir la langue
     const langSelect = document.getElementById('language');
     if(langSelect) {
         langSelect.value = book.languageId || book.language_id || book.language || '';
     }
 
-    document.getElementById('quantity').value = book.totalQuantity;
+    // On couvre toutes les façons dont la base de données peut renvoyer la quantité
+    document.getElementById('quantity').value = book.totalQuantity || book.total_quantity || book.quantity || 1;
+    
     if(book.isbn) document.getElementById('isbn').value = book.isbn;
     if(book.synopsis) document.getElementById('synopsis').value = book.synopsis;
     
@@ -289,6 +296,8 @@ function preparerModification(id) {
     // Mettre l'aperçu si l'image existe
     if (book.imageUrl || book.image_url) {
         document.getElementById('imagePreview').innerHTML = `<img src="${book.imageUrl || book.image_url}" alt="Aperçu">`;
+    } else {
+        document.getElementById('imagePreview').innerHTML = `<span>Aucune image sélectionnée</span>`;
     }
     
     // Changer l'interface de la modale en mode "Édition"
@@ -301,9 +310,10 @@ function preparerModification(id) {
 }
 
 function supprimerLivre(id) {
-    if(!confirm("Attention : Voulez-vous vraiment supprimer ce livre du catalogue ?")) return;
+    // CORRECTION ICI : L'alerte de suppression était mal écrite
+    if (!confirm("Attention : Voulez-vous vraiment supprimer ce livre du catalogue ?")) return;
 
-    fetch(`index.php/api/books/${id}`, { method: 'DELETE' })
+    fetch(`index.php/api/books/${id}`, { method: 'DELETE', credentials: 'same-origin' })
         .then(res => res.json().then(data => ({status: res.status, body: data})))
         .then(res => {
             if(res.status === 200) {
@@ -338,7 +348,6 @@ function closeModal(modalId) {
     document.getElementById('addBookForm').reset(); 
     document.getElementById('newCategoryName').value = '';
     
-    // NOUVEAU : Réinitialiser aussi le champ de la nouvelle langue
     const langInput = document.getElementById('newLanguageName');
     if(langInput) {
         langInput.value = '';
@@ -355,7 +364,7 @@ document.addEventListener('click', function(event) {
             closeModal(modal.id);
         }
     });
-}); // <--- C'EST ICI QU'IL MANQUAIT LA PARENTHÈSE FERMANTE !
+}); 
 
 // Aperçu de l'image
 function previewImage(event) {

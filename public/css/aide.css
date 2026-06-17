@@ -1,0 +1,77 @@
+:root {
+    --primary-blue: #3b82f6;
+    --dark-text: #1e293b;
+    --light-gray: #f8fafc;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray);
+    color: var(--dark-text);
+}
+
+/* Le bloc de la Navbar a été supprimé car il est géré par style.css */
+
+/* Contenu */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.help-header { text-align: center; margin-bottom: 40px; }
+.help-header h1 { font-size: 2.5rem; color: var(--dark-text); margin-bottom: 10px; }
+.help-header h1 span { color: var(--primary-blue); }
+
+/* Accordéon FAQ */
+details {
+    background: var(--light-gray);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+details:hover { background: #f1f5f9; }
+summary {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--dark-text);
+    outline: none;
+    list-style: none;
+    position: relative;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    transition: transform 0.3s ease;
+}
+details[open] summary::after { content: "-"; }
+details p {
+    margin-top: 15px;
+    color: #475569;
+    line-height: 1.6;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Box Contact */
+.contact-box {
+    margin-top: 40px;
+    padding: 20px;
+    background: #eff6ff;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed var(--primary-blue);
+}
+.contact-box h3 { color: var(--primary-blue); margin-top: 0; }
+.contact-box p { color: #475569; margin-bottom: 0; }

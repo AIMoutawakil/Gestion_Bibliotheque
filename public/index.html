@@ -8,31 +8,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/landing.css">
-    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">↑</button>
-    <script src="js/landing.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/landing.js?v=2"></script>
 
 </head>
 <body>
+    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">↑</button>
     <div id="splash-screen" class="splash-screen">
         <img src="images/logo.png" alt="Logo ISGA" class="splash-logo pulse-anim">
     </div>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <img src="images/logo.png" alt="Logo ISGA" class="nav-logo">
-                <span>Bibliothèque ISGA</span>
-            </div>
+    <nav class="navbar glass-effect">
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-wrap: wrap; gap: 20px;">
             
-            <div class="nav-links">
-                <a href="index.html" class="active">Accueil</a>
+            <a class="nav-brand" href="index.html" style="white-space: nowrap;">📚 Bibliothèque ISGA</a>
+            
+            <div class="nav-links" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <a href="index.html">Accueil</a>
                 <a href="catalogue.html">Catalogue</a>
+                <a href="mes-emprunts.html">Mes Emprunts</a>
                 <a href="a-propos.html">À propos</a>
                 <a href="aide.html">Aide</a>
             </div>
 
-        <div class="nav-auth">
-                <button id="theme-toggle" class="btn-icon" aria-label="Changer de thème">🌙</button>
+            <div id="nav-auth-section" style="display: inline-flex; align-items: center; gap: 15px;">
                 <a href="login.html" class="btn-text">Connexion</a>
                 <a href="register.html" class="btn-primary">S'inscrire</a>
             </div>
@@ -115,22 +114,18 @@
         </div>
 
         <!-- La nouvelle grille de 5 livres -->
+       <!-- La nouvelle grille de 5 livres -->
         <div class="trending-showcase">
             
             <!-- TOP 1 -->
             <article class="trend-showcase-card">
                 <div class="trend-rank">1</div>
                 <div class="trend-img-wrapper">
-                    <img src="images/art-du-code.jpg" alt="L'Art du Code Pro" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Code'">
+                    <img src="images/les elus.jpg" alt="L'Art du Code Pro" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Code'">
                 </div>
-<div class="trend-info">
-                    <h4>L'Art du Code Pro</h4>
-                    <p>Martin Fowler</p>
-                    
-                    <!-- AJOUT : La pastille Disponible -->
-                    <div class="availability-status available">
-                        <span class="status-dot"></span> Disponible
-                    </div>
+                <div class="trend-info">
+                    <h4>Les Elus de l'invisible</h4>
+                    <p>George Richon</p>
                 </div>
             </article>
 
@@ -138,16 +133,11 @@
             <article class="trend-showcase-card">
                 <div class="trend-rank" style="background: #3b82f6;">2</div>
                 <div class="trend-img-wrapper">
-                    <img src="images/biology.jpg" alt="Biologie Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Biologie'">
+                    <img src="images/la folle du Lynx.jpg" alt="Biologie Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Biologie'">
                 </div>
                 <div class="trend-info">
-                    <h4>Biologie Moderne</h4>
-                    <p>Peter H. Raven</p>
-                    
-                    <!-- AJOUT : La pastille Disponible -->
-                    <div class="availability-status available">
-                        <span class="status-dot"></span> Disponible
-                    </div>      
+                    <h4>La folle du Lynx</h4>
+                    <p>Max Billancourt</p>
                 </div>
             </article>
 
@@ -155,11 +145,11 @@
             <article class="trend-showcase-card">
                 <div class="trend-rank" style="background: #60a5fa;">3</div>
                 <div class="trend-img-wrapper">
-                    <img src="images/informatique.jpg" alt="UX/UI Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Design'">
+                    <img src="images/passeur.png" alt="UX/UI Moderne" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Design'">
                 </div>
                 <div class="trend-info">
-                    <h4>UX/UI Moderne</h4>
-                    <p>Don Norman</p>
+                    <h4>Le Passeur de Livres</h4>
+                    <p>Carsten Henn</p>
                 </div>
             </article>
 
@@ -167,11 +157,11 @@
             <article class="trend-showcase-card">
                 <div class="trend-rank" style="background: #94a3b8;">4</div>
                 <div class="trend-img-wrapper">
-                    <img src="images/management.jpg" alt="Leadership 2.0" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Manage'">
+                    <img src="images/themis.jpg" alt="Leadership 2.0" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Manage'">
                 </div>
                 <div class="trend-info">
-                    <h4>Leadership 2.0</h4>
-                    <p>Simon Sinek</p>
+                    <h4>Themis et l'ordre du nouveau temple</h4>
+                    <p>Poincare</p>
                 </div>
             </article>
 
@@ -179,11 +169,11 @@
             <article class="trend-showcase-card">
                 <div class="trend-rank" style="background: #cbd5e1; color: #334155;">5</div>
                 <div class="trend-img-wrapper">
-                    <img src="images/roman.jpg" alt="L'Étranger" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Roman'">
+                    <img src="images/la memoire.jpg" alt="L'Étranger" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Roman'">
                 </div>
                 <div class="trend-info">
-                    <h4>L'Étranger</h4>
-                    <p>Albert Camus</p>
+                    <h4>La mémoire de l'enfant</h4>
+                    <p>Ana Maria</p>
                 </div>
             </article>
 
@@ -264,6 +254,28 @@
             <p>&copy; 2026 ISGA. Tous droits réservés. Développé par Ai Moutawakil.</p>
         </div>
     </footer>
+
+<script>
+        // Ce script s'exécute à la seconde même où la page a fini de charger
+        window.onload = function() {
+            const authSection = document.getElementById('nav-auth-section');
+            const memoire = sessionStorage.getItem('user') || localStorage.getItem('user');
+
+            if (memoire && authSection) {
+                const user = JSON.parse(memoire);
+                authSection.innerHTML = `
+                    <span style="font-weight: 500; color: #64748b; margin-right: 15px;">👋 Bonjour, ${user.fullname || 'Étudiant'}</span>
+                    <button onclick="seDeconnecterForce()" style="color: #ef4444; border: 1px solid #ef4444; padding: 8px 16px; border-radius: 8px; background: transparent; cursor: pointer; font-weight: bold;">Déconnexion</button>
+                `;
+            }
+        };
+
+        function seDeconnecterForce() {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
 
 </body>
 </html>

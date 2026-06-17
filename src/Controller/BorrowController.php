@@ -11,76 +11,128 @@ class BorrowController {
     }
 
     public function borrow(): void {
-        // On vérifie que la session PHP est active et que l'utilisateur est connecté
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
             echo json_encode(["erreur" => "Vous devez être connecté pour emprunter un livre."]);
             return;
         }
 
-        // On lit le JSON envoyé par le Javascript (qui contiendra l'ID du livre)
         $data = json_decode(file_get_contents("php://input"), true);
-        
+        $db = Database::getInstance()->getConnection();
+        $userId = $_SESSION['user_id'];
+
+        // 🚨 SÉCURITÉ 1 : ANTI-RETARD
+        $stmtCheck = $db->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = :user_id AND status = 'EN_COURS' AND due_date < CURDATE()");
+        $stmtCheck->execute(['user_id' => $userId]);
+        if ($stmtCheck->fetchColumn() > 0) {
+            http_response_code(403);
+            echo json_encode(["erreur" => "Emprunt refusé : Vous avez un ou plusieurs livres en retard 🔴. Veuillez les restituer à l'administration."]);
+            return;
+        }
+
+        // 🚨 SÉCURITÉ 2 : LIMITE GLOBALE DE 3 LIVRES
+        $stmtGlobalLimit = $db->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = :user_id AND status = 'EN_COURS'");
+        $stmtGlobalLimit->execute(['user_id' => $userId]);
+        if ($stmtGlobalLimit->fetchColumn() >= 3) {
+            http_response_code(403);
+            echo json_encode(["erreur" => "Limite atteinte 🛑 : Vous avez déjà 3 livres en cours d'emprunt. Restituez-en d'abord."]);
+            return;
+        }
+
         if (!isset($data['book_id'])) {
             http_response_code(400);
             echo json_encode(["erreur" => "L'identifiant du livre est manquant."]);
             return;
         }
 
-        $userId = $_SESSION['user_id'];
         $bookId = (int) $data['book_id'];
 
-        // On tente l'emprunt
-        $success = $this->borrowingRepository->borrowBook($userId, $bookId);
+        // 🚨 SÉCURITÉ 3 : PAS DE DOUBLONS DU MÊME LIVRE
+        $stmtDuplicate = $db->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = :user_id AND book_id = :book_id AND status = 'EN_COURS'");
+        $stmtDuplicate->execute(['user_id' => $userId, 'book_id' => $bookId]);
+        if ($stmtDuplicate->fetchColumn() > 0) {
+            http_response_code(403);
+            echo json_encode(["erreur" => "Vous avez déjà un exemplaire de ce livre en cours d'emprunt."]);
+            return;
+        }
 
-        if ($success) {
+        // On force la quantité à 1 de manière sécurisée
+        $quantity = 1;
+
+        $result = $this->borrowingRepository->borrowBook($userId, $bookId, $quantity);
+
+        if ($result === true) {
             echo json_encode(["message" => "Livre emprunté avec succès !"]);
         } else {
             http_response_code(400);
-            echo json_encode(["erreur" => "Le livre n'est plus disponible ou une erreur est survenue."]);
+            echo json_encode(["erreur" => $result]); 
         }
     }
 
     // Renvoyer les emprunts de l'utilisateur connecté
-// Dans la méthode qui gère '/api/my-borrowings'
-    public function getMyBorrowings() {
-        // CORRECTION : Plus de session_start() ici car index.php s'en occupe !
-
+    public function getMyBorrowings(): void {
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
-            echo json_encode(['error' => 'Non autorisé']);
+            echo json_encode(["erreur" => "Non autorisé"]);
             return;
         }
 
-        $userId = $_SESSION['user_id'];
-        $borrowings = $this->borrowingRepository->findByUserId($userId);
+        $db = Database::getInstance()->getConnection();
+        
+        // La clause WHERE garantit que l'on ne sort QUE les livres de l'étudiant connecté
+        $stmt = $db->prepare("
+            SELECT b.*, bk.title, bk.image_url, bk.author 
+            FROM borrowings b 
+            JOIN books bk ON b.book_id = bk.id 
+            WHERE b.user_id = :user_id 
+            ORDER BY b.borrow_date DESC
+        ");
+        
+        $stmt->execute(['user_id' => $_SESSION['user_id']]);
+        $emprunts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        echo json_encode($borrowings);
+        echo json_encode($emprunts);
     }
+
     // Renvoyer la liste de tous les emprunts (Réservé aux ADMINS)
     public function getAllBorrowings(): void {
-        // 1. SÉCURITÉ : On vérifie que l'utilisateur est bien un ADMIN
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
-            http_response_code(403);
-            echo json_encode(["erreur" => "Accès refusé. Seuls les administrateurs peuvent voir cette page."]);
-            return;
-        }
-
-        // 2. On récupère toutes les données croisées
-        $borrowings = $this->borrowingRepository->getAllBorrowingsWithDetails();
-
-        // 3. On envoie au format JSON
-        echo json_encode($borrowings);
-    }
-    // Marquer un livre comme rendu (Réservé Admin)
-    public function returnBook(int $id): void {
-        // Sécurité
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
             http_response_code(403);
             echo json_encode(["erreur" => "Accès refusé."]);
             return;
         }
 
+        try {
+            $db = Database::getInstance()->getConnection();
+            
+            // 🚨 LA REQUÊTE CORRIGÉE : Utilise u.full_name et évite l'erreur du Repository
+            $sql = "SELECT b.id, b.borrow_date, b.due_date, b.status, 
+                           u.full_name as student_name, u.email as student_email, 
+                           bk.title as book_title
+                    FROM borrowings b
+                    JOIN users u ON b.user_id = u.id
+                    JOIN books bk ON b.book_id = bk.id
+                    ORDER BY b.borrow_date DESC";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $emprunts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            echo json_encode($emprunts);
+
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(["erreur" => "Erreur de récupération des emprunts."]);
+        }
+    }
+
+    // Marquer un livre comme rendu (Réservé Admin)
+    public function returnBook(int $id): void {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
+            http_response_code(403);
+            echo json_encode(["erreur" => "Accès refusé."]);
+            return;
+        }
         if ($this->borrowingRepository->returnBook($id)) {
             http_response_code(200);
             echo json_encode(["message" => "Livre restitué avec succès. Le stock a été mis à jour !"]);
@@ -91,15 +143,30 @@ class BorrowController {
     }
 
     public function getEmpruntsParUtilisateur($user_id) {
-    // On sécurise la requête pour ne chercher QUE les emprunts de l'ID fourni
-    $sql = "SELECT b.id, books.title, books.image_url, b.borrow_date, b.due_date, b.status 
-            FROM borrowings b
-            JOIN books ON b.book_id = books.id
-            WHERE b.user_id = :user_id";
-            
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute(['user_id' => $user_id]);
-    
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT b.id, books.title, books.image_url, b.borrow_date, b.due_date, b.status 
+                FROM borrowings b
+                JOIN books ON b.book_id = books.id
+                WHERE b.user_id = :user_id";
+                
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->execute(['user_id' => $user_id]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // --- 🚨 VÉRIFICATION AUTOMATIQUE DES RETARDS (POUR LE BANDEAU) ---
+    public function checkRetardsAutomatique(): void {
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(["retards" => 0]);
+            return;
+        }
+
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = :user_id AND status = 'EN_COURS' AND due_date < CURDATE()");
+        $stmt->execute(['user_id' => $_SESSION['user_id']]);
+        
+        $count = $stmt->fetchColumn();
+        echo json_encode(["retards" => (int)$count]);
     }
 }

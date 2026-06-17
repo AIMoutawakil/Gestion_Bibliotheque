@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Emprunts - Admin ISGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-emprunts.css">
+
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar">
+        <div class="admin-brand">Admin ISGA</div>
+        <nav class="admin-nav">
+            <a href="admin-dashboard.html" class="nav-item">📊 Tableau de bord</a>
+            <a href="admin-livres.html" class="nav-item">📚 Gestion des Livres</a>
+            <a href="admin-emprunts.html" class="nav-item active">🔄 Gestion des Emprunts</a>
+            <a href="admin-etudiants.html" class="nav-item">🎓 Gestion des Étudiants</a>
+            
+            <div class="nav-divider"></div>
+            
+            <a href="catalogue.html" class="nav-item" target="_blank">🌐 Voir le catalogue</a>
+            <a href="#" onclick="logout()" class="nav-item text-danger">🚪 Déconnexion</a>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        
+        <div class="admin-header">
+            <h1>Gestion des Emprunts</h1>
+            <p style="color: #64748b; margin-top: 5px;">Suivez les sorties de livres et validez les retours.</p>
+        </div>
+
+        <div class="admin-toolbar" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="searchBorrowInput" placeholder="🔍 Rechercher un étudiant, un email ou un livre..." 
+                   style="flex-grow: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 0.95rem; outline: none; min-width: 250px;">
+            
+            <select id="filterStatusInput" style="padding: 12px 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 0.95rem; outline: none; background: white; min-width: 200px;">
+                <option value="ALL">Tous les emprunts</option>
+                <option value="EN_COURS">🔵 En cours</option>
+                <option value="EN_RETARD">🔴 En retard</option>
+                <option value="RETOURNE">🟢 Retournés</option>
+            </select>
+        </div>
+
+        <div class="admin-card" style="overflow-x: auto;">
+            <table class="admin-table" style="width: 100%; min-width: 900px; text-align: left;">
+                <thead>
+                    <tr>
+                        <th style="padding: 15px 20px;">Étudiant</th>
+                        <th style="padding: 15px 20px;">Livre</th>
+                        <th style="padding: 15px 20px;">Date d'emprunt</th>
+                        <th style="padding: 15px 20px;">Date Limite</th>
+                        <th style="padding: 15px 20px;">Statut</th>
+                        <th style="padding: 15px 20px; text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="borrowings-table-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: #64748b;">Chargement des données...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script src="js/admin-emprunts.js"></script>
+    
+    <script>
+        function logout() {
+            sessionStorage.clear();
+            fetch('index.php/api/logout', { method: 'POST' }).then(() => window.location.href = 'login.html');
+        }
+    </script>
+</body>
+</html>

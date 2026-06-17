@@ -9,80 +9,50 @@
     <link rel="stylesheet" href="css/catalogue.css"> 
     
     <style>
-        /* Layout principal du catalogue */
-        .catalog-layout { 
-            display: grid; 
-            grid-template-columns: 250px 1fr; 
-            gap: 40px; 
-            max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 0 20px; 
-        }
-        
-        /* La Sidebar (Catégories) */
-        .sidebar { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-            height: fit-content; 
-            position: sticky; 
-            top: 100px; /* Reste visible au scroll */
-        }
+        .catalog-layout { display: grid; grid-template-columns: 250px 1fr; gap: 40px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .sidebar { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: fit-content; position: sticky; top: 100px; }
         .sidebar h3 { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 700; }
-        .cat-btn { 
-            display: block; width: 100%; text-align: left; background: none; border: none; 
-            padding: 12px 15px; border-radius: 8px; color: #475569; cursor: pointer; 
-            transition: all 0.2s; font-size: 1rem; margin-bottom: 5px; font-weight: 500;
-        }
+        .cat-btn { display: block; width: 100%; text-align: left; background: none; border: none; padding: 12px 15px; border-radius: 8px; color: #475569; cursor: pointer; transition: all 0.2s; font-size: 1rem; margin-bottom: 5px; font-weight: 500; }
         .cat-btn:hover { background: #f1f5f9; color: royalblue; }
         .cat-btn.active { background: royalblue; color: white; }
-
-        /* L'En-tête du catalogue */
         .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .catalog-header h1 { font-size: 1.8rem; color: #1e293b; margin: 0; }
-        .search-input { 
-            padding: 12px 20px; border-radius: 30px; border: 1px solid #e2e8f0; 
-            width: 300px; outline: none; transition: 0.3s; font-family: inherit;
-        }
+        .search-input { padding: 12px 20px; border-radius: 30px; border: 1px solid #e2e8f0; width: 300px; outline: none; transition: 0.3s; font-family: inherit; }
         .search-input:focus { border-color: royalblue; box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1); }
-
-        /* Responsive Mobile */
-        @media (max-width: 768px) {
-            .catalog-layout { grid-template-columns: 1fr; }
-            .sidebar { position: static; }
-            .catalog-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .search-input { width: 100%; }
-        }
+        @media (max-width: 768px) { .catalog-layout { grid-template-columns: 1fr; } .sidebar { position: static; } .catalog-header { flex-direction: column; align-items: flex-start; gap: 15px; } .search-input { width: 100%; } }
     </style>
 </head>
 <body class="bg-light">
 
-    <!-- NAVBAR -->
-    <nav class="navbar glass-effect">
-        <div class="nav-container">
-            <a class="nav-brand" href="index.html">📚 Bibliothèque ISGA</a>
-            <div class="nav-links">
+<nav class="navbar glass-effect">
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-wrap: wrap; gap: 20px;">
+            <a class="nav-brand" href="index.html" style="white-space: nowrap;">📚 Bibliothèque ISGA</a>
+            <div class="nav-links" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                 <a href="index.html">Accueil</a>
                 <a href="catalogue.html" class="active">Catalogue</a>
+                <a href="mes-emprunts.html">Mes Emprunts</a>
                 <a href="a-propos.html">À propos</a>
                 <a href="aide.html">Aide</a>
             </div>
-            <div class="auth-zone" id="auth-zone"></div>
+        <div class="auth-zone" id="auth-zone" style="margin-left: auto;">
+                <div style="display: inline-flex; align-items: center; gap: 15px;">
+                    <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
+                    <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- LAYOUT CATALOGUE -->
     <div class="catalog-layout">
         
-        <!-- SIDEBAR & FILTRES -->
         <aside class="sidebar">
             <h3>Catégories</h3>
+            
+            <input type="text" id="category-search" placeholder="🔍 Voir toutes les catégories..." readonly
+                   style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #e2e8f0; outline: none; font-size: 0.9rem; background: #f8fafc; cursor: pointer; color: royalblue; font-weight: 600;">
+            
             <div id="category-list">
                 <button class="cat-btn active" data-category="all">Toutes les catégories</button>
-                <button class="cat-btn" data-category="Informatique">Informatique</button>
-                <button class="cat-btn" data-category="Management">Management</button>
-                <button class="cat-btn" data-category="Design">Design</button>
             </div>
 
             <h3 style="margin-top: 30px;">Disponibilité</h3>
@@ -91,13 +61,12 @@
             </label>
 
             <h3 style="margin-top: 30px;">Langues</h3>
-            <label class="filter-label"><input type="checkbox" checked> Français</label>
-            <label class="filter-label"><input type="checkbox"> Anglais</label>
-            <label class="filter-label"><input type="checkbox"> Arabe</label>
+            <label class="filter-label"><input type="checkbox" class="filter-lang" value="Français"> Français</label>
+            <label class="filter-label"><input type="checkbox" class="filter-lang" value="Anglais"> Anglais</label>
+            <label class="filter-label"><input type="checkbox" class="filter-lang" value="Arabe"> Arabe</label>
         </aside>
 
         <main>
-            <!-- HEADER (Tri + Recherche) -->
             <div class="catalog-header">
                 <h1 id="catalog-title">Tous les livres</h1>
                 
@@ -107,18 +76,14 @@
                         <option value="az">Alphabétique (A-Z)</option>
                         <option value="pop">Plus populaires</option>
                     </select>
-                    <input type="text" id="search-input" class="search-input" placeholder="Rechercher un titre...">
+                    <input type="text" id="search-input" class="search-input" placeholder="Rechercher un titre ou auteur...">
                 </div>
             </div>
 
-            <!-- GRILLE DES LIVRES -->
             <div class="books-grid" id="books-container">
-                <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">
-                    Chargement du catalogue...
-                </div>
+                <div style="text-align: center; width: 100%; padding: 50px; color: #64748b;">Chargement du catalogue...</div>
             </div>
 
-            <!-- PAGINATION -->
             <div class="pagination">
                 <button class="btn-page disabled">&laquo; Précédent</button>
                 <button class="btn-page active">1</button>
@@ -126,9 +91,52 @@
                 <button class="btn-page">3</button>
                 <button class="btn-page">Suivant &raquo;</button>
             </div>
+
+            <!-- NOUVEAU : BLOC SUGGESTION -->
+            <div style="margin-top: 50px; padding: 30px; background: #eff6ff; border-radius: 12px; border: 1px dashed #93c5fd; text-align: center;">
+                <h3 style="color: #1e3a8a; margin-bottom: 10px;">🤔 Vous n'avez pas trouvé votre bonheur ?</h3>
+                <p style="color: #475569; margin-bottom: 20px;">Suggérez-nous un livre à acheter ou laissez une remarque à l'administration.</p>
+                <button onclick="document.getElementById('messageModal').classList.add('active')" style="padding: 10px 20px; font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; background: #3b82f6; color: white; cursor: pointer; transition: 0.2s;">
+                    ✉️ Envoyer un message
+                </button>
+            </div>
         </main>
     </div>
 
+    <div id="categoryModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📚 Sélectionnez une discipline</h2>
+                <button class="btn-close" id="closeCatModalBtn">&times;</button>
+            </div>
+            <div style="padding: 24px; background: #f8fafc;">
+                <input type="text" id="modal-category-search" placeholder="🔍 Rechercher une catégorie spécifique..." 
+                       style="width: 100%; padding: 14px 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-size: 1rem;">
+                
+                <div id="modal-category-grid" class="modal-cat-grid">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FENÊTRE MODALE DES MESSAGES (SUGGESTIONS) -->
+    <div id="messageModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✉️ Envoyer un message</h2>
+                <button class="btn-close" onclick="document.getElementById('messageModal').classList.remove('active')">&times;</button>
+            </div>
+            <div style="padding: 24px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #1e293b;">Votre remarque ou suggestion de livre :</label>
+                <textarea id="student-message-text" rows="5" placeholder="Bonjour, je cherche le livre 'Clean Code' de Robert C. Martin, serait-il possible de l'ajouter à la bibliothèque ?" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-size: 1rem; resize: vertical; margin-bottom: 20px;"></textarea>
+                
+                <button onclick="envoyerMessageAdmin()" id="btn-send-msg" style="width: 100%; padding: 12px; font-size: 1.05rem; font-weight: 600; border: none; border-radius: 8px; background: #22c55e; color: white; cursor: pointer; transition: 0.2s;">
+                    Envoyer à l'administration
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <script src="js/auth.js"></script> 
     <script src="js/catalogue.js"></script>
 </body>

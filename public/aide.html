@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide - Bibliothèque ISGA</title>
+    <link rel="stylesheet" href="css/aide.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar glass-effect">
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-wrap: wrap; gap: 20px; width: 100%;">
+            
+            <a class="nav-brand" href="index.html" style="white-space: nowrap;">📚 Bibliothèque ISGA</a>
+            
+            <div class="nav-links" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                <a href="index.html">Accueil</a>
+                <a href="catalogue.html">Catalogue</a>
+                <a href="mes-emprunts.html">Mes Emprunts</a>
+                <a href="a-propos.html">À propos</a>
+                <a href="aide.html" class="active">Aide</a>
+            </div>
+            
+            <div class="auth-zone" id="auth-zone" style="margin-left: auto; flex-shrink: 0; padding-left: 20px;">
+                <div style="display: inline-flex; align-items: center; gap: 15px;">
+                    <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
+                    <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="help-header">
+            <h1>Comment pouvons-nous vous <span>aider</span> ?</h1>
+            <p>Trouvez rapidement des réponses à vos questions fréquentes.</p>
+        </div>
+
+        <details>
+            <summary>Comment emprunter un livre ?</summary>
+            <p>Pour emprunter un livre, vous devez d'abord vous connecter à votre compte étudiant. Rendez-vous ensuite dans le <strong>Catalogue</strong>, recherchez le livre souhaité et cliquez sur le bouton "Emprunter". Vous devrez récupérer la version physique auprès de l'administration.</p>
+        </details>
+
+        <details>
+            <summary>Quelle est la durée maximale d'un emprunt ?</summary>
+            <p>La durée standard pour l'emprunt d'un livre est de 15 jours. Passé ce délai, des pénalités de retard peuvent s'appliquer sur votre compte étudiant.</p>
+        </details>
+
+        <details>
+            <summary>J'ai oublié mon mot de passe, que faire ?</summary>
+            <p>Si vous avez oublié vos identifiants, rendez-vous sur la page de connexion et cliquez sur "Mot de passe oublié". Un lien de réinitialisation sera envoyé sur votre adresse email académique ISGA.</p>
+        </details>
+
+        <details>
+            <summary>Puis-je suggérer l'ajout d'un nouveau livre ?</summary>
+            <p>Absolument ! Les professeurs et les étudiants peuvent soumettre des requêtes de nouveaux ouvrages directement depuis leur espace personnel. L'administrateur étudiera la demande pour l'ajouter au catalogue.</p>
+        </details>
+
+        <div class="contact-box">
+            <h3>Toujours bloqué(e) ?</h3>
+            <p>Contactez l'administration de la bibliothèque directement par email à <strong>bibliotheque@isga.ma</strong> ou passez nous voir au bureau des ressources.</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/aide.js"></script>
+</body>
+</html>

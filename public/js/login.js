@@ -34,8 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Succès ! On sauvegarde les infos de base et on redirige
             sessionStorage.setItem('user', JSON.stringify(data.user));
             
+            // Redirection corrigée vers le Dashboard
             if (data.user.role === 'ADMIN') {
-                window.location.href = 'admin.html';
+                window.location.href = 'admin-dashboard.html';
             } else {
                 window.location.href = 'catalogue.html';
             }

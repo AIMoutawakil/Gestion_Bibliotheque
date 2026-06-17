@@ -4,102 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails du livre - Bibliothèque ISGA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css"> 
-    <link rel="stylesheet" href="css/catalogue.css"> <!-- Pour les livres recommandés -->
     <link rel="stylesheet" href="css/details.css"> 
 </head>
-<body class="bg-light">
+<body>
 
-    <!-- NAVBAR -->
     <nav class="navbar glass-effect">
-        <div class="nav-container">
-            <a class="nav-brand" href="index.html">📚 Bibliothèque ISGA</a>
-            <div class="nav-links">
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-wrap: wrap; gap: 20px; width: 100%;">
+            <a class="nav-brand" href="index.html" style="white-space: nowrap;">📚 Bibliothèque ISGA</a>
+            <div class="nav-links" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                 <a href="index.html">Accueil</a>
                 <a href="catalogue.html" class="active">Catalogue</a>
+                <a href="mes-emprunts.html">Mes Emprunts</a>
                 <a href="a-propos.html">À propos</a>
                 <a href="aide.html">Aide</a>
             </div>
-            <div class="auth-zone" id="auth-zone"></div>
+            <div class="auth-zone" id="auth-zone" style="margin-left: auto; flex-shrink: 0; padding-left: 20px;">
+                <div style="display: inline-flex; align-items: center; gap: 15px;">
+                    <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
+                    <a href="register.html" style="background: royalblue; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600;">S'inscrire</a>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
-        
-        <!-- 1. Le Fil d'Ariane -->
-        <div class="breadcrumb" id="breadcrumb">
-            <a href="index.html">Accueil</a> <span>/</span> 
-            <a href="catalogue.html">Catalogue</a> <span>/</span> 
-            <a href="#" id="bread-category">Catégorie</a> <span>/</span> 
-            <span style="color: #1e293b; font-weight: 600;" id="bread-title">Titre du livre</span>
+    <div class="container details-page-container">
+        <div class="breadcrumb">
+            <a href="catalogue.html">Catalogue</a> > 
+            <span id="bread-category">...</span> > 
+            <strong id="bread-title" class="bread-active">...</strong>
         </div>
 
-        <!-- 2. Section Hero (2 colonnes) -->
-        <section class="details-hero">
-            <div class="details-cover-wrapper">
-                <img src="" alt="Couverture" id="book-cover" class="details-cover" onerror="this.src='https://placehold.co/400x600/eeeeee/31343C?text=Image'">
+        <div class="details-grid">
+            <div class="details-left">
+                <img id="book-cover" src="https://placehold.co/400x600/eeeeee/31343C?text=Chargement..." alt="Couverture">
+                <div id="book-tags" class="tags-container"></div>
             </div>
-            
-            <div class="details-info">
-                <h1 class="details-title" id="book-title">Chargement du titre...</h1>
-                <a href="#" class="details-author" id="book-author">Auteur</a>
+
+            <div class="details-right">
+                <h1 id="book-title" class="book-title">Chargement des détails...</h1>
+                <p id="book-author" class="book-author">Veuillez patienter</p>
                 
-                <div class="details-status" id="book-status">
-                    <!-- Rempli en JS -->
+                <div class="meta-tags">
+                    <span class="meta-tag" id="tag-year">📅 <span id="meta-year"></span></span>
+                    <span class="meta-tag" id="tag-pages">📄 <span id="meta-pages"></span> pages</span>
+                    <span class="meta-tag" id="tag-lang">🌍 <span id="meta-lang"></span></span>
+                    <span class="meta-tag" id="tag-isbn">🔢 ISBN: <span id="meta-isbn"></span></span>
                 </div>
+                
+                <h3 class="synopsis-title" id="title-synopsis" style="margin-bottom: 15px; color: #1e293b;">Résumé</h3>
+                <p id="book-synopsis" class="book-synopsis"></p>
 
-                <button class="btn-emprunter" id="btn-action">
-                    Emprunter ce livre
-                </button>
-
-                <!-- La Grille Métadonnées -->
-                <div class="meta-grid">
-                    <div class="meta-item">
-                        <span class="meta-label">Année d'édition</span>
-                        <span class="meta-value" id="meta-year">-</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Nombre de pages</span>
-                        <span class="meta-value" id="meta-pages">-</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Langue</span>
-                        <span class="meta-value" id="meta-lang">-</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">ISBN</span>
-                        <span class="meta-value" id="meta-isbn">-</span>
-                    </div>
+                <div class="action-card">
+                    <div id="book-status" class="details-status">Recherche du stock...</div>
+                    <div id="action-controls" class="action-controls"></div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <!-- 3. Section Description -->
-        <section class="details-synopsis">
-            <h3>Résumé</h3>
-            <p id="book-synopsis">Chargement du résumé...</p>
-            
-            <!-- Tags -->
-            <div class="tags-container" id="book-tags">
-                <!-- Rempli en JS -->
-            </div>
-        </section>
-
-        <!-- 4. Section Recommandations -->
-        <section style="margin-bottom: 60px;">
-            <h3 style="font-size: 1.5rem; color: #1e293b; margin-bottom: 20px;">Dans la même catégorie</h3>
-            
-            <!-- On réutilise la grille du catalogue ! -->
-            <div class="books-grid" id="related-books" style="grid-template-columns: repeat(4, 1fr);">
-                <!-- Les cartes catalogue seront injectées ici -->
-            </div>
-        </section>
-
-    </main>
-
-    <script src="js/auth.js"></script> 
+    <script src="js/auth.js"></script>
     <script src="js/details.js"></script>
 </body>
 </html>
