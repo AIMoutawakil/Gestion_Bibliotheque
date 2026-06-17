@@ -1,4 +1,4 @@
-# 📚 Système de Gestion de Bibliothèque - ISGA
+# 📚 Système de Gestion de Bibliothèque 
 
 Une application web Full-Stack développée pour automatiser et simplifier la gestion des prêts de livres, du catalogue et des étudiants au sein de la bibliothèque de l'ISGA. Ce projet repose sur une architecture robuste **MVC (Modèle-Vue-Contrôleur)** en PHP.
 
