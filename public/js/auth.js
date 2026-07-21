@@ -1,10 +1,6 @@
-// public/js/auth.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mettre à jour la barre de navigation
     updateNavbar();
 
-    // 2. Vérifier les retards SEULEMENT si l'utilisateur est connecté
     if (sessionStorage.getItem('user')) {
         verifierEtAfficherRetard();
     }
@@ -17,23 +13,19 @@ function updateNavbar() {
     const userJson = sessionStorage.getItem('user');
     
     if (userJson) {
-        // Utilisateur connecté
         const user = JSON.parse(userJson);
         
-        // Calcul des initiales (ex: "Mostapha Moutawakil" -> "MM")
         const nameParts = user.name.split(' ');
         let initials = nameParts[0].charAt(0).toUpperCase();
         if (nameParts.length > 1) {
             initials += nameParts[1].charAt(0).toUpperCase();
         }
 
-        // Bouton d'administration (Corrigé pour pointer vers admin-dashboard.html)
         let boutonAdmin = '';
         if (user.role === 'ADMIN') {
             boutonAdmin = `<a href="admin-dashboard.html" style="background: #eab308; color: #1e293b; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-right: 15px; font-size: 0.9rem;">⚙️ Administration</a>`;
         }
 
-        // Injection du HTML (Avatar + Nom + Boutons)
         authZone.innerHTML = `
             <div style="display: flex; align-items: center;">
                 ${boutonAdmin}
@@ -45,7 +37,6 @@ function updateNavbar() {
             </div>
         `;
     } else {
-        // Utilisateur non connecté
         authZone.innerHTML = `
             <div style="display: inline-flex; align-items: center; gap: 15px;">
                 <a href="login.html" style="color: #1e293b; font-weight: 600; text-decoration: none;">Connexion</a>
@@ -68,9 +59,6 @@ function logout() {
         });
 }
 
-// ========================================================
-// 🚨 DÉTECTEUR AUTOMATIQUE DE RETARDS
-// ========================================================
 function verifierEtAfficherRetard() {
     const timestamp = new Date().getTime();
     fetch(`index.php/api/check-retards?t=${timestamp}`)
