@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ----------------------------------------------------
-    // 0. GESTION DE LA CONNEXION (BARRE DE NAVIGATION)
-    // ----------------------------------------------------
     const authSection = document.getElementById('nav-auth-section');
     const userJson = sessionStorage.getItem('user') || localStorage.getItem('user'); 
 
@@ -14,9 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // ----------------------------------------------------
-    // 1. SPLASH SCREEN (Écran de chargement)
-    // ----------------------------------------------------
     const splashScreen = document.getElementById('splash-screen');
     if (splashScreen) {
         setTimeout(() => {
@@ -24,13 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1200);
     }
 
-    // ----------------------------------------------------
-    // 2. THEME JOUR / NUIT (SÉCURISÉ ✅)
-    // ----------------------------------------------------
     const themeToggleBtn = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
 
-    // On vérifie si le bouton existe dans le HTML avant de faire quoi que ce soit !
     if (themeToggleBtn) {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
@@ -51,9 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ----------------------------------------------------
-    // 3. F.A.Q INTERACTIVE (Accordéon)
-    // ----------------------------------------------------
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
         const questionBtn = item.querySelector('.faq-question');
@@ -67,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ----------------------------------------------------
-    // 4. ANIMATION DES CHIFFRES CLÉS (Statistiques)
-    // ----------------------------------------------------
     const counters = document.querySelectorAll('.stat-number');
     let animationsLancees = false;
 
@@ -101,9 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(statsSection);
     }
 
-    // ----------------------------------------------------
-    // 5. ANIMATIONS AU SCROLL (Scroll Reveal)
-    // ----------------------------------------------------
     const elementsToAnimate = document.querySelectorAll('.feature-card, .trend-showcase-card, .testimonial-card, .faq-item');
     elementsToAnimate.forEach(el => el.classList.add('reveal'));
 
@@ -118,9 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ----------------------------------------------------
-    // 6. BOUTON RETOUR EN HAUT
-    // ----------------------------------------------------
     const backToTopBtn = document.getElementById('back-to-top');
     if (backToTopBtn) {
         window.addEventListener('scroll', () => {
@@ -136,11 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-}); // <-- FIN DU DOMContentLoaded
+});
 
-// ==========================================
-// 7. FONCTION GLOBALE : DÉCONNEXION
-// ==========================================
+
 function seDeconnecterForce() {
     sessionStorage.clear();
     localStorage.clear();
