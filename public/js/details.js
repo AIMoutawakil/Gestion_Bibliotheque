@@ -1,4 +1,3 @@
-// Variable globale pour mémoriser le stock du livre affiché
 let maxStockGlobal = 0; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchBookDetails(bookId);
 });
 
-// --- REQUÊTE POUR RÉCUPÉRER LE LIVRE ---
 function fetchBookDetails(id) {
     const timestamp = new Date().getTime(); 
     fetch(`index.php/api/books?t=${timestamp}`)
@@ -33,7 +31,6 @@ function fetchBookDetails(id) {
         });
 }
 
-// --- AFFICHAGE DANS LE DESIGN ---
 function afficherDetailsLivre(book) {
     const imageUrl = book.image_url || book.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=Image';
     const category = book.category_name || book.categoryName || "Général";
@@ -99,13 +96,11 @@ function afficherDetailsLivre(book) {
     mettreAJourInterfaceAction(idLivre, userJson);
 }
 
-// --- MISE À JOUR DE L'INTERFACE D'ACTION ---
 function mettreAJourInterfaceAction(idLivre, userJson) {
     const controlsDiv = document.getElementById('action-controls');
 
     if (maxStockGlobal > 0) {
         if (userJson) {
-            // Étudiant connecté : Design propre sans + ni -
             controlsDiv.innerHTML = `
                 <div style="margin-bottom: 20px;">
                     <span style="color: #64748b; font-weight: 600;">Stock restant : </span>
@@ -114,7 +109,6 @@ function mettreAJourInterfaceAction(idLivre, userJson) {
                 <button id="btn-action" class="btn-action" style="width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold; background: royalblue; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="emprunterLivre(${idLivre})">Confirmer l'emprunt</button>
             `;
         } else {
-            // Pas connecté
             controlsDiv.innerHTML = `
                 <div style="margin-bottom: 20px;">
                     <span style="color: #64748b; font-weight: 600;">Stock restant : </span>
@@ -124,7 +118,7 @@ function mettreAJourInterfaceAction(idLivre, userJson) {
             `;
         }
     } else {
-        // Rupture de stock
+
         controlsDiv.innerHTML = `
             <div style="margin-bottom: 20px; color: #ef4444; font-weight: 600;">
                 Rupture de stock
@@ -134,14 +128,11 @@ function mettreAJourInterfaceAction(idLivre, userJson) {
     }
 }
 
-// --- FONCTION POUR EMPRUNTER (SÉCURISÉE) ---
 function emprunterLivre(bookId) {
     const btnAction = document.getElementById('btn-action');
-    
-    // On force la quantité à 1 !
+
     const qtyAEmprunter = 1; 
 
-    // Bouton en mode "Chargement"
     btnAction.textContent = "⏳ Emprunt en cours...";
     btnAction.disabled = true;
     btnAction.style.opacity = "0.7";
@@ -162,7 +153,6 @@ function emprunterLivre(bookId) {
     .then(data => {
         alert(`🎉 Succès : Livre emprunté !\n⏳ Vous avez 15 jours pour le restituer.`);
         
-        // On diminue le stock en temps réel sur la page
         maxStockGlobal -= qtyAEmprunter;
         
         const userJson = sessionStorage.getItem('user'); 
