@@ -1,13 +1,11 @@
 <?php
-// src/Controller/UserController.php
 
 require_once __DIR__ . '/../../config/Database.php';
 
 class UserController {
     
-    // Récupérer tous les étudiants avec leurs statistiques d'emprunt
     public function getAllStudents(): void {
-        // Sécurité : Réservé à l'Admin
+
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
             http_response_code(403);
             echo json_encode(["erreur" => "Accès refusé."]);
