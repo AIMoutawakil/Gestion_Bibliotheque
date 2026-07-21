@@ -1,5 +1,3 @@
-// public/js/register.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const errorBox = document.getElementById('register-error');
@@ -16,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = registerForm.querySelector('.submit');
         submitBtn.textContent = 'Création en cours...';
         submitBtn.disabled = true;
-
-        // On fusionne le prénom et le nom pour la base de données
+        
         const fullName = `${prenom} ${nom}`;
 
         fetch('index.php/api/register', {
@@ -31,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         })
         .then(data => {
-            // Si le compte est créé, on redirige vers le login avec un petit délai
+           
             submitBtn.textContent = 'Succès ! Redirection...';
             submitBtn.style.backgroundColor = 'green';
             setTimeout(() => {
