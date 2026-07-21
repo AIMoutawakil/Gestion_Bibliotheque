@@ -1,5 +1,3 @@
-// public/js/admin-emprunts.js
-
 let allBorrowings = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filterStatus) filterStatus.addEventListener('change', applyFilters);
 });
 
-// 🚨 LE BOUCLIER ANTI-BUG
 function checkSecurity(response) {
     if (response.status === 401 || response.status === 403) {
         sessionStorage.clear();
