@@ -1,4 +1,4 @@
-/* --- Variables & Reset --- */
+
 :root {
     --royal-blue: royalblue;
     --royal-blue-hover: #3a5bd9;
@@ -11,9 +11,6 @@
 body { background-color: var(--bg-light); color: var(--text-dark); }
 a { text-decoration: none; }
 
-/* =========================================
-   1. LA NAVBAR (Glassmorphism)
-   ========================================= */
 .navbar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -57,12 +54,9 @@ a { text-decoration: none; }
 }
 .btn-primary:hover { background-color: var(--royal-blue-hover); }
 
-/* =========================================
-   2. LE HERO HEADER (L'accroche)
-   ========================================= */
 .hero-section {
-    min-height: 100vh; /* Prend toute la hauteur de l'écran */
-    padding-top: 80px; /* Pour compenser la navbar fixe */
+    min-height: 100vh; 
+    padding-top: 80px; 
     display: flex;
     align-items: center;
 }
@@ -72,12 +66,11 @@ a { text-decoration: none; }
     margin: 0 auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Deux colonnes de taille égale */
+    grid-template-columns: 1fr 1fr; 
     gap: 50px;
     align-items: center;
 }
 
-/* --- Côté Gauche (Textes) --- */
 .badge-new {
     display: inline-block;
     background-color: rgba(65, 105, 225, 0.1);
@@ -90,7 +83,7 @@ a { text-decoration: none; }
 }
 
 .hero-title {
-    font-size: 3.5rem; /* Très grand titre */
+    font-size: 3.5rem; 
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 20px;
@@ -120,7 +113,6 @@ a { text-decoration: none; }
 }
 .btn-secondary:hover { border-color: var(--royal-blue); color: var(--royal-blue); }
 
-/* --- Côté Droit (Image et Carte flottante) --- */
 .hero-image-wrapper { position: relative; }
 
 .hero-image {
@@ -142,7 +134,7 @@ a { text-decoration: none; }
     align-items: center;
     gap: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    animation: float 4s ease-in-out infinite; /* Petite animation de flottaison */
+    animation: float 4s ease-in-out infinite; 
 }
 
 .floating-card .emoji { font-size: 2rem; }
@@ -150,25 +142,16 @@ a { text-decoration: none; }
 .floating-text strong { font-size: 1.1rem; color: var(--text-dark); }
 .floating-text span { font-size: 0.85rem; color: var(--text-muted); }
 
-/* Animation de la carte flottante */
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 }
-
-/* =========================================
-   CLASSES UTILES (Utilitaires)
-   ========================================= */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 .text-center { text-align: center; }
 .section-title { font-size: 2.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
 .section-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 50px; }
 .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-
-/* =========================================
-   3. SECTION : COMMENT ÇA MARCHE
-   ========================================= */
 .features-section { padding: 100px 0; background-color: white; }
 
 .features-grid {
@@ -187,7 +170,7 @@ a { text-decoration: none; }
 
 .feature-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(65, 105, 225, 0.1); /* Ombre bleu royal */
+    box-shadow: 0 20px 40px rgba(65, 105, 225, 0.1); 
     background: white;
 }
 
@@ -203,30 +186,19 @@ a { text-decoration: none; }
 
 .feature-card h3 { font-size: 1.25rem; color: var(--text-dark); margin-bottom: 15px; }
 .feature-card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
-
-/* =========================================
-   4. SECTION : TENDANCES
-   ========================================= */
-
-/* =========================================
-   4. SECTION : TENDANCES (Vitrine Top 5)
-   ========================================= */
 .trending-section { padding: 80px 0; background-color: var(--bg-light); }
-
-/* La grille parfaite pour 5 livres */
 .trending-showcase {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Divise exactement en 5 colonnes égales */
-    gap: 24px; /* Espace net entre les cadres */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 24px; 
     padding: 20px 0 40px 0;
 }
 
-/* Le cadre Premium du livre */
 .trend-showcase-card {
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    /* Ombre douce et bordure très subtile */
+ 
     box-shadow: 0 4px 15px rgba(0,0,0,0.04);
     border: 1px solid rgba(65, 105, 225, 0.08); 
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -236,14 +208,14 @@ a { text-decoration: none; }
     flex-direction: column;
 }
 
-/* L'effet au survol : Le cadre s'illumine en bleu royal et se soulève */
+
 .trend-showcase-card:hover {
     transform: translateY(-12px);
-    box-shadow: 0 15px 30px rgba(65, 105, 225, 0.15); /* Ombre bleutée */
-    border-color: var(--royal-blue); /* Le cadre devient bleu */
+    box-shadow: 0 15px 30px rgba(65, 105, 225, 0.15); 
+    border-color: var(--royal-blue); 
 }
 
-/* Le badge de classement (Numéro 1, 2, 3...) */
+
 .trend-rank {
     position: absolute;
     top: -10px;
@@ -260,18 +232,15 @@ a { text-decoration: none; }
     font-weight: 800;
     z-index: 10;
     box-shadow: 0 4px 10px rgba(65, 105, 225, 0.4);
-    border: 3px solid white; /* Petite bordure blanche pour détacher le cercle */
+    border: 3px solid white; 
 }
 
-/* Forme de l'image (format livre) */
 .trend-img-wrapper {
     width: 100%;
     aspect-ratio: 2 / 3;
     position: relative;
 }
 .trend-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Texte centré pour un côté plus élégant */
 .trend-info {
     padding: 20px 15px;
     text-align: center; 
@@ -284,12 +253,10 @@ a { text-decoration: none; }
 .trend-info h4 { font-size: 1.05rem; color: var(--text-dark); margin: 0 0 5px 0; font-weight: 700; line-height: 1.3; }
 .trend-info p { color: var(--text-muted); margin: 0; font-size: 0.85rem; }
 
-/* Adaptation Dark Mode */
 [data-theme="dark"] .trend-showcase-card { background: #1e293b; border-color: rgba(255,255,255,0.05); }
 [data-theme="dark"] .trend-info { background: transparent; }
 [data-theme="dark"] .trend-rank { border-color: #1e293b; }
 
-/* Responsive : Sur mobile, ça devient un slider horizontal */
 @media (max-width: 1024px) {
     .trending-showcase {
         display: flex;
@@ -298,7 +265,7 @@ a { text-decoration: none; }
         padding-left: 10px;
         scroll-snap-type: x mandatory;
     }
-    .trending-showcase::-webkit-scrollbar { display: none; } /* Cache la barre sur mobile */
+    .trending-showcase::-webkit-scrollbar { display: none; } 
     .trend-showcase-card {
         min-width: 180px;
         flex-shrink: 0;
@@ -306,15 +273,12 @@ a { text-decoration: none; }
     }
 }
 
-/* Adaptation pour le Dark Mode existant */
 [data-theme="dark"] .book-stack-card { 
     background: #1e293b; 
     box-shadow: -5px 0 15px rgba(0,0,0,0.4);
 }
 [data-theme="dark"] .trend-info-stack { background: #1e293b; }
-/* =========================================
-   5. FOOTER (Pied de page)
-   ========================================= */
+
 .footer { background-color: #111827; color: white; padding-top: 60px; margin-top: 50px; }
 
 .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
@@ -328,12 +292,10 @@ a { text-decoration: none; }
 .footer-links a:hover { color: var(--royal-blue); text-decoration: none; }
 
 .footer-bottom { border-top: 1px solid #374151; text-align: center; padding: 20px 0; color: #6b7280; font-size: 0.85rem; }
-/* =========================================
-   LE MODE SOMBRE (Dark Mode Magic)
-   ========================================= */
+
 [data-theme="dark"] {
-    --bg-light: #0f172a; /* Fond bleu nuit très foncé */
-    --text-dark: #f8fafc; /* Texte blanc cassé */
+    --bg-light: #0f172a;
+    --text-dark: #f8fafc; 
     --text-muted: #94a3b8;
 }
 
@@ -345,18 +307,10 @@ a { text-decoration: none; }
 
 .btn-icon { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; transition: transform 0.2s; }
 .btn-icon:hover { transform: scale(1.1); }
-
-/* =========================================
-   SECTION CHIFFRES CLÉS
-   ========================================= */
 .stats-section { background-color: var(--royal-blue); color: white; padding: 60px 0; }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 30px; }
 .stat-number { font-size: 3.5rem; font-weight: 800; display: block; margin-bottom: 10px; }
 .stat-item p { font-size: 1.1rem; opacity: 0.9; font-weight: 500; }
-
-/* =========================================
-   SECTION TÉMOIGNAGES
-   ========================================= */
 .testimonials-section { padding: 100px 0; background-color: var(--bg-light); }
 .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
 .testimonial-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); }
@@ -367,9 +321,6 @@ a { text-decoration: none; }
 .author-info strong { display: block; color: var(--text-dark); }
 .author-info span { font-size: 0.85rem; color: var(--text-muted); }
 
-/* =========================================
-   SECTION F.A.Q
-   ========================================= */
 .faq-section { padding: 100px 0; background-color: white; }
 .faq-container { max-width: 800px; margin: 0 auto; }
 .faq-item { background: var(--bg-light); margin-bottom: 15px; border-radius: 12px; overflow: hidden; transition: 0.3s; }
@@ -379,9 +330,7 @@ a { text-decoration: none; }
 .faq-item.active .faq-answer { max-height: 200px; }
 .faq-item.active .icon { transform: rotate(45deg); color: var(--royal-blue); }
 .icon { font-size: 1.5rem; transition: transform 0.3s; }
-/* =========================================
-   FINITIONS : SPLASH SCREEN
-   ========================================= */
+
 .splash-screen {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background-color: var(--bg-light); z-index: 9999;
@@ -403,12 +352,9 @@ a { text-decoration: none; }
     100% { transform: scale(0.9); opacity: 0.8;} 
 }
 
-/* Le fond s'adapte en Dark Mode */
+
 [data-theme="dark"] .splash-screen { background-color: var(--bg-light); }
 
-/* =========================================
-   FINITIONS : BOUTON RETOUR EN HAUT
-   ========================================= */
 .back-to-top {
     position: fixed; bottom: 30px; right: 30px;
     width: 50px; height: 50px; border-radius: 50%;
@@ -421,45 +367,36 @@ a { text-decoration: none; }
 .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .back-to-top:hover { background-color: var(--royal-blue-hover); transform: translateY(-5px) scale(1.05); }
 
-/* =========================================
-   FINITIONS : ANIMATIONS AU SCROLL
-   ========================================= */
-/* Classe de base pour cacher les éléments */
 .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
-/* Classe active qui déclenche l'apparition */
+
 .reveal.active { opacity: 1; transform: translateY(0); }
 
-/* =========================================
-   📱 RESPONSIVE (Adaptation Mobile & Tablette)
-   ========================================= */
 @media (max-width: 992px) {
-    /* Le Hero Header passe sur une seule colonne */
+
     .hero-container { grid-template-columns: 1fr; text-align: center; gap: 30px; }
     .hero-title { font-size: 2.5rem; }
     .hero-description { margin: 0 auto 30px auto; }
     .hero-buttons { justify-content: center; }
     
-    /* La petite carte flottante s'adapte */
+
     .floating-card { bottom: 10px; left: 10px; padding: 10px; }
     
-    /* Toutes les grilles passent sur 1 seule colonne */
+   
     .features-grid, .trending-grid, .stats-grid, .testimonials-grid { grid-template-columns: 1fr; gap: 20px; }
     
-    /* Le Footer s'aligne verticalement */
+   
     .footer-content { grid-template-columns: 1fr; text-align: center; }
     .footer-desc { margin: 15px auto; }
     
-    /* On cache les textes de navigation pour ne garder que les boutons sur mobile */
+
     .nav-links { display: none; }
 }
-/* =========================================
-   BARRE DE RECHERCHE HERO
-   ========================================= */
+
 .hero-search-form {
     display: flex;
     background: white;
     padding: 8px;
-    border-radius: 99px; /* Bouton parfaitement rond (pill) */
+    border-radius: 99px; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.03);
     max-width: 450px;
@@ -467,7 +404,7 @@ a { text-decoration: none; }
 }
 
 .hero-search-form:hover {
-    box-shadow: 0 15px 35px rgba(65, 105, 225, 0.15); /* Reflet bleuté */
+    box-shadow: 0 15px 35px rgba(65, 105, 225, 0.15); 
 }
 
 .hero-search-input {
@@ -497,7 +434,6 @@ a { text-decoration: none; }
 }
 
 [data-theme="dark"] .hero-search-form { background: #1e293b; border-color: rgba(255,255,255,0.05); }
-/* Pastilles de disponibilité */
 .availability-status {
     display: flex;
     align-items: center;
@@ -507,8 +443,8 @@ a { text-decoration: none; }
     font-size: 0.8rem;
     font-weight: 600;
 }
-.availability-status.available { color: #166534; } /* Vert foncé */
-.availability-status.unavailable { color: #991b1b; } /* Rouge foncé */
+.availability-status.available { color: #166534; } 
+.availability-status.unavailable { color: #991b1b; } 
 
 .status-dot {
     width: 8px;
@@ -517,11 +453,11 @@ a { text-decoration: none; }
 }
 .availability-status.available .status-dot { 
     background-color: #22c55e; 
-    box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); /* Lueur verte */
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); 
 }
 .availability-status.unavailable .status-dot { 
     background-color: #ef4444; 
-    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); /* Lueur rouge */
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); 
 }
 
 [data-theme="dark"] .availability-status.available { color: #4ade80; }
