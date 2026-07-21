@@ -1,5 +1,4 @@
 <?php
-// src/Model/User.php
 
 class User {
     private ?int $id;
@@ -22,7 +21,6 @@ class User {
         $this->id = $id;
     }
 
-    // Getters
     public function getId(): ?int { return $this->id; }
     public function getFullName(): string { return $this->fullName; }
     public function getEmail(): string { return $this->email; }
