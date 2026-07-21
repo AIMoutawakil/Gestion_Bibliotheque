@@ -1,6 +1,3 @@
-/* public/css/admin-etudiants.css */
-
-/* --- STRUCTURE GLOBALE (SIDEBAR + CONTENU) --- */
 .admin-layout {
     display: flex;
     min-height: 100vh;
@@ -8,10 +5,9 @@
     margin: 0;
 }
 
-/* --- SIDEBAR (MENU LATÉRAL) --- */
 .admin-sidebar {
     width: 260px;
-    background-color: #1e293b; /* Couleur sombre */
+    background-color: #1e293b;  
     color: white;
     display: flex;
     flex-direction: column;
@@ -22,7 +18,7 @@
     padding: 25px 20px;
     font-size: 1.5rem;
     font-weight: bold;
-    color: #60a5fa; /* Bleu clair */
+    color: #60a5fa;
     border-bottom: 1px solid #334155;
     margin-bottom: 20px;
 }
@@ -59,14 +55,12 @@
     margin: 15px 20px;
 }
 
-/* --- CONTENU PRINCIPAL --- */
 .admin-content {
     flex-grow: 1;
     padding: 40px;
     overflow-y: auto;
 }
 
-/* --- ONGLETS (TABS) --- */
 .tabs-header {
     display: flex;
     gap: 10px;
@@ -93,7 +87,6 @@
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 
-/* --- BARRE DE RECHERCHE --- */
 .controls-row {
     display: flex;
     gap: 15px;
@@ -122,7 +115,6 @@
     opacity: 0.5;
 }
 
-/* --- TABLEAUX --- */
 .admin-table-wrapper {
     background: white;
     border-radius: 12px;
@@ -153,7 +145,6 @@
     color: #1e293b;
 }
 
-/* --- BADGES & MESSAGES --- */
 .status-badge {
     padding: 6px 12px;
     border-radius: 50px;
