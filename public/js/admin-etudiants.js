@@ -1,5 +1,3 @@
-// public/js/admin-etudiants.js
-
 let allStudents = [];
 let allMessages = [];
 
@@ -39,7 +37,6 @@ function switchTab(tabName) {
     }
 }
 
-// 🚨 LE BOUCLIER ANTI-BUG : Gère les conflits de session automatiquement
 function checkSecurity(response) {
     if (response.status === 401 || response.status === 403) {
         sessionStorage.clear(); // On nettoie le navigateur
