@@ -1,20 +1,19 @@
-// public/js/app.js
 
-let allBooks = []; // On stocke tous les livres ici
-let currentCategoryId = null; // Pour mémoriser la catégorie active
+let allBooks = []; 
+let currentCategoryId = null; 
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchBooks();
-    setupLiveSearch(); // On active la barre de recherche magique !
+    setupLiveSearch(); 
 });
 
 function fetchBooks() {
     fetch('index.php/api/books')
         .then(response => response.json())
         .then(books => {
-            allBooks = books; // Sauvegarde
-            displayBooks(allBooks); // Affichage de la grille
-            generateCategories(allBooks); // Création du menu
+            allBooks = books; 
+            displayBooks(allBooks); 
+            generateCategories(allBooks); 
         })
         .catch(error => {
             document.getElementById('books-container').innerHTML = 
@@ -22,14 +21,10 @@ function fetchBooks() {
         });
 }
 
-// ---------------------------------------------------------
-// 1. AFFICHAGE DES LIVRES (Le nouveau design)
-// ---------------------------------------------------------
 function displayBooks(booksToDisplay) {
     const container = document.getElementById('books-container');
     container.innerHTML = '';
 
-    // On récupère l'utilisateur connecté depuis le sessionStorage
     const user = JSON.parse(sessionStorage.getItem('user'));
 
     booksToDisplay.forEach(book => {
@@ -63,14 +58,12 @@ function displayBooks(booksToDisplay) {
 function emprunterLivre(bookId) {
     const user = JSON.parse(sessionStorage.getItem('user'));
 
-    // 1. Vérifier si l'utilisateur est connecté
     if (!user) {
         alert("Vous devez être connecté pour emprunter un livre.");
         window.location.href = 'login.html';
         return;
     }
 
-    // 2. Envoyer la demande au PHP SEULEMENT si l'étudiant confirme
     if (confirm("Voulez-vous vraiment emprunter ce livre ?")) {
         
         fetch('index.php/api/borrow', {
@@ -100,9 +93,6 @@ function emprunterLivre(bookId) {
     }
 }
 
-// ---------------------------------------------------------
-// 2. MENU DES CATÉGORIES
-// ---------------------------------------------------------
 function generateCategories(books) {
     const listContainer = document.getElementById('categories-list');
     
@@ -114,14 +104,12 @@ function generateCategories(books) {
         }
     });
 
-    // Bouton "Toutes les catégories" (Actif par défaut avec notre classe .active)
     listContainer.innerHTML = `
         <li class="category-item active" onclick="filterByCategory(null, 'Tous les livres', this)">
             Toutes les catégories
         </li>
     `;
 
-    // Génération dynamique des autres catégories
     categoriesMap.forEach((name, id) => {
         listContainer.innerHTML += `
             <li class="category-item" onclick="filterByCategory(${id}, '${name}', this)">
@@ -131,23 +119,17 @@ function generateCategories(books) {
     });
 }
 
-// ---------------------------------------------------------
-// 3. FILTRE PAR CLIC (Catégories)
-// ---------------------------------------------------------
 function filterByCategory(categoryId, categoryName, clickedElement) {
     currentCategoryId = categoryId; // On mémorise où on est
     document.getElementById('catalogue-title').textContent = categoryName;
 
-    // On retire la classe 'active' de tous les boutons
     document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
     // On l'ajoute uniquement sur le bouton cliqué
     clickedElement.classList.add('active');
 
-    // On vide la barre de recherche quand on change de catégorie
     const searchInput = document.getElementById('search-input');
     if (searchInput) searchInput.value = '';
 
-    // Filtrage
     if (categoryId === null) {
         displayBooks(allBooks);
     } else {
@@ -156,30 +138,22 @@ function filterByCategory(categoryId, categoryName, clickedElement) {
     }
 }
 
-// ---------------------------------------------------------
-// 4. RECHERCHE EN TEMPS RÉEL (Bonus Pro !)
-// ---------------------------------------------------------
 function setupLiveSearch() {
     const searchInput = document.getElementById('search-input');
     
     if (searchInput) {
-        // À chaque fois que l'utilisateur tape une lettre ("input")
         searchInput.addEventListener('input', (e) => {
             const motCle = e.target.value.toLowerCase();
 
-            // On filtre les livres selon la catégorie actuelle ET le mot tapé
             const filteredBooks = allBooks.filter(book => {
-                // Vérifie si le livre correspond à la recherche (titre ou auteur)
                 const correspondRecherche = book.title.toLowerCase().includes(motCle) || 
                                             book.author.toLowerCase().includes(motCle);
                 
-                // Vérifie si le livre est dans la bonne catégorie
                 const correspondCategorie = (currentCategoryId === null) || (book.categoryId === currentCategoryId);
 
                 return correspondRecherche && correspondCategorie;
             });
 
-            // On met à jour l'affichage instantanément
             displayBooks(filteredBooks);
         });
     }
