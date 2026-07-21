@@ -1,5 +1,4 @@
 <?php
-// src/Repository/BorrowingRepository.php
 
 require_once __DIR__ . '/../../config/Database.php';
 
@@ -10,7 +9,6 @@ class BorrowingRepository {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    // 🚨 NOUVEAU : On ajoute le paramètre $quantity (par défaut 1)
     public function borrowBook(int $userId, int $bookId, int $quantity = 1) {
         try {
             $this->db->beginTransaction();
@@ -51,12 +49,10 @@ class BorrowingRepository {
 
         } catch (Exception $e) {
             $this->db->rollBack();
-            // 🚨 MAGIE : Au lieu de retourner un simple "false", on renvoie l'erreur SQL
             return "Détail de l'erreur SQL : " . $e->getMessage(); 
         }
     }
 
-    // Récupérer la liste des emprunts d'un utilisateur
     public function findBorrowingsByUser(int $userId): array {
         $stmt = $this->db->prepare("
             SELECT b.title, b.author, br.borrow_date, br.status 
@@ -69,7 +65,6 @@ class BorrowingRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Récupérer TOUS les emprunts avec les détails (Pour l'Admin)
     public function getAllBorrowingsWithDetails(): array {
         $stmt = $this->db->query("
             SELECT br.id, br.borrow_date, br.due_date, br.return_date, br.status,
@@ -83,7 +78,6 @@ class BorrowingRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Restituer un livre (Transaction : met à jour l'emprunt + augmente le stock)
     public function returnBook(int $borrowingId): bool {
         try {
             $this->db->beginTransaction();
@@ -99,7 +93,6 @@ class BorrowingRepository {
 
             $bookId = $borrowing['book_id'];
 
-            // CORRECTION : J'ai mis 'RETOURNE' comme dans ta base de données
             $stmtUpdate = $this->db->prepare("
                 UPDATE borrowings 
                 SET status = 'RETOURNE', return_date = NOW() 
@@ -123,7 +116,6 @@ class BorrowingRepository {
         }
     }
 
-    // Récupérer les emprunts pour l'espace Étudiant (avec l'image)
     public function findByUserId($userId) {
         $sql = "SELECT b.id, books.title, books.author, books.image_url, b.borrow_date, b.due_date, b.status 
                 FROM borrowings b
@@ -137,14 +129,13 @@ class BorrowingRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // (Fonction doublon corrigée avec $this->db au lieu de $this->pdo)
     public function getEmpruntsParUtilisateur($user_id) {
         $sql = "SELECT b.id, books.title, books.image_url, b.borrow_date, b.due_date, b.status 
                 FROM borrowings b
                 JOIN books ON b.book_id = books.id
                 WHERE b.user_id = :user_id";
                 
-        $stmt = $this->db->prepare($sql); // 🚨 Correction de $this->pdo en $this->db
+        $stmt = $this->db->prepare($sql);
         $stmt->execute(['user_id' => $user_id]);
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
