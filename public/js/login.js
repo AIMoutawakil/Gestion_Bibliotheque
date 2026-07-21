@@ -1,13 +1,10 @@
-// public/js/login.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const errorBox = document.getElementById('login-error');
 
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
-
-        // On cache l'erreur et on vide la mémoire par sécurité
+        
         errorBox.classList.add('d-none');
         sessionStorage.clear();
         localStorage.clear();
@@ -15,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        // On modifie le texte du bouton pendant le chargement
         const submitBtn = loginForm.querySelector('.submit');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Connexion...';
@@ -31,10 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Succès ! On sauvegarde les infos de base et on redirige
+
             sessionStorage.setItem('user', JSON.stringify(data.user));
             
-            // Redirection corrigée vers le Dashboard
             if (data.user.role === 'ADMIN') {
                 window.location.href = 'admin-dashboard.html';
             } else {
