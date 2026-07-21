@@ -12,9 +12,6 @@ body {
     color: var(--dark-text);
 }
 
-/* Le bloc de la Navbar a été supprimé car il est géré par style.css */
-
-/* Contenu */
 .container {
     max-width: 800px;
     margin: 50px auto;
@@ -28,7 +25,6 @@ body {
 .help-header h1 { font-size: 2.5rem; color: var(--dark-text); margin-bottom: 10px; }
 .help-header h1 span { color: var(--primary-blue); }
 
-/* Accordéon FAQ */
 details {
     background: var(--light-gray);
     border-radius: 8px;
@@ -64,7 +60,6 @@ details p {
     border-top: 1px solid #e2e8f0;
 }
 
-/* Box Contact */
 .contact-box {
     margin-top: 40px;
     padding: 20px;
