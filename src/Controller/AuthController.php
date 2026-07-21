@@ -1,5 +1,4 @@
 <?php
-// src/Controller/AuthController.php
 
 require_once __DIR__ . '/../Repository/UserRepository.php';
 
@@ -23,12 +22,9 @@ class AuthController {
 
         if ($user && password_verify($data['password'], $user->getPasswordHash())) {       
             
-            // 🚨 LA CORRECTION EST ICI : On vide totalement l'ancienne session
             session_unset(); 
-            // On régénère l'ID pour la sécurité
             session_regenerate_id(true);     
             
-            // On crée la NOUVELLE session
             $_SESSION['user_id'] = $user->getId();
             $_SESSION['user_role'] = $user->getRole();
             $_SESSION['user_name'] = $user->getFullName();
@@ -47,7 +43,6 @@ class AuthController {
     }
 
     public function logout() {
-        // On vide toutes les variables de session
         session_unset(); 
         $_SESSION = array();
         
@@ -59,8 +54,7 @@ class AuthController {
                 $params["secure"], $params["httponly"]
             );
         }
-        
-        // On détruit la session serveur
+
         session_destroy();
         
         echo json_encode(['message' => 'Déconnexion réussie et cache vidé']);
