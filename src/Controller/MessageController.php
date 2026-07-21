@@ -1,5 +1,4 @@
 <?php
-// src/Controller/MessageController.php
 
 require_once __DIR__ . '/../../config/Database.php';
 
@@ -9,8 +8,6 @@ class MessageController {
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
-
-    // Recevoir un message d'un étudiant
     public function sendMessage(): void {
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
@@ -30,7 +27,7 @@ class MessageController {
             $stmt = $this->db->prepare("INSERT INTO messages (user_id, message) VALUES (:user_id, :message)");
             $stmt->execute([
                 'user_id' => $_SESSION['user_id'],
-                'message' => htmlspecialchars($data['message']) // Sécurité contre les failles XSS
+                'message' => htmlspecialchars($data['message']) 
             ]);
 
             http_response_code(201);
@@ -41,7 +38,6 @@ class MessageController {
         }
     }
 
-    // --- NOUVEAU : Lire tous les messages (Réservé Admin) ---
     public function getAllMessages(): void {
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
             http_response_code(403);
