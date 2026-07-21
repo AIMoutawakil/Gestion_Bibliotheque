@@ -1,9 +1,7 @@
-// public/js/mes-emprunts.js
-
 let myBorrowings = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Vérification de la connexion
+    
     const userJson = sessionStorage.getItem('user');
     if (!userJson) {
         alert("Veuillez vous connecter pour voir vos emprunts.");
@@ -11,10 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 2. Charger les emprunts
     fetchMyBorrowings();
 
-    // 3. Activer la barre de recherche
     const searchInput = document.getElementById('searchMyBooks');
     if (searchInput) {
         searchInput.addEventListener('input', applySearch);
@@ -65,16 +61,10 @@ function renderBorrowings(borrowingsToDisplay) {
 
     borrowingsToDisplay.forEach(b => {
         const imageUrl = b.image_url || b.imageUrl || 'https://placehold.co/400x600/eeeeee/31343C?text=Livre';
-        
-        // 💡 CORRECTION : Gestion propre du titre
         const finalTitle = b.title || b.book_title || 'Livre inconnu';
-
-        // Gestion des dates
         const borrowDate = new Date(b.borrow_date).toLocaleDateString('fr-FR');
         const dueDateObj = new Date(b.due_date);
         const dueDateStr = dueDateObj.toLocaleDateString('fr-FR');
-        
-        // Calcul des jours restants
         const today = new Date();
         today.setHours(0,0,0,0);
         
@@ -85,11 +75,10 @@ function renderBorrowings(borrowingsToDisplay) {
         let badgeHtml = '';
         let datesHtml = `<p style="margin-bottom: 5px; color: #64748b; font-size: 0.9rem;">Emprunté le : <strong style="color: #475569;">${borrowDate}</strong></p>`;
 
-        // Application du code couleur et des dates
         if (b.status === 'RETOURNE') {
             cardStyle = 'border-left-color: #cbd5e1; opacity: 0.7;'; 
             
-            // 💡 CORRECTION : On vérifie que la date de retour existe pour éviter "Invalid Date"
+
             const returnDate = b.return_date ? new Date(b.return_date).toLocaleDateString('fr-FR') : 'Inconnue';
             
             datesHtml += `<p style="margin-bottom: 15px; color: #64748b; font-size: 0.9rem;">Rendu le : <strong style="color: #475569;">${returnDate}</strong></p>`;
