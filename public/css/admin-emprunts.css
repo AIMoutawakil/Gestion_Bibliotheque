@@ -1,6 +1,4 @@
-/* ==========================================================================
-   LAYOUT PRINCIPAL ADMIN (Sidebar à gauche + Contenu à droite)
-   ========================================================================== */
+
 body.admin-body {
     margin: 0;
     padding: 0;
@@ -10,12 +8,9 @@ body.admin-body {
     font-family: 'Inter', sans-serif;
 }
 
-/* =========================================
-   BARRE LATÉRALE (SIDEBAR)
-   ========================================= */
 .admin-sidebar {
     width: 260px;
-    background-color: #1e293b; /* Bleu très sombre */
+    background-color: #1e293b; 
     color: white;
     display: flex;
     flex-direction: column;
@@ -31,7 +26,7 @@ body.admin-body {
     font-weight: 700;
     padding: 25px 20px;
     text-align: left;
-    color: #60a5fa; /* Bleu clair */
+    color: #60a5fa; 
     border-bottom: 1px solid #334155;
     margin-bottom: 15px;
 }
@@ -61,14 +56,14 @@ body.admin-body {
 }
 
 .nav-item.active {
-    background-color: #3b82f6; /* Bleu royal */
+    background-color: #3b82f6; 
     color: white;
     font-weight: 600;
 }
 
 .nav-item.text-danger {
     color: #fca5a5;
-    margin-top: auto; /* Pousse le bouton de déconnexion vers le bas si besoin */
+    margin-top: auto; 
 }
 
 .nav-item.text-danger:hover {
@@ -82,12 +77,9 @@ body.admin-body {
     margin: 15px 0;
 }
 
-/* =========================================
-   ZONE DE CONTENU PRINCIPAL
-   ========================================= */
 .admin-main {
     flex-grow: 1;
-    margin-left: 260px; /* Doit être égal à la largeur de la sidebar */
+    margin-left: 260px; 
     padding: 30px 40px;
     display: flex;
     flex-direction: column;
@@ -108,9 +100,6 @@ body.admin-body {
     color: #0f172a;
 }
 
-/* =========================================
-   LES BOUTONS ADMIN
-   ========================================= */
 .btn-primary {
     background-color: #3b82f6;
     color: white;
@@ -141,9 +130,6 @@ body.admin-body {
     background-color: #cbd5e1;
 }
 
-/* =========================================
-   CARTES ET TABLEAUX
-   ========================================= */
 .admin-card {
     background: white;
     border-radius: 12px;
@@ -179,9 +165,6 @@ body.admin-body {
     background-color: #f8fafc;
 }
 
-/* =========================================
-   PASTILLES DE STATUTS (EMPRUNTS & STOCKS)
-   ========================================= */
 .badge-status {
     padding: 6px 12px;
     border-radius: 20px;
@@ -213,9 +196,6 @@ body.admin-body {
     100% { opacity: 1; }
 }
 
-/* =========================================
-   MODALES (Fenêtres pop-up Admin)
-   ========================================= */
 .admin-form .form-group {
     margin-bottom: 15px;
 }
