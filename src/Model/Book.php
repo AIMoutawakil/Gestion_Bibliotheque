@@ -1,5 +1,4 @@
 <?php
-// src/Model/Book.php
 
 class Book implements \JsonSerializable {
     private ?int $id;
@@ -43,7 +42,6 @@ class Book implements \JsonSerializable {
         $this->isbn = $isbn;
     }
 
-    // Getters
     public function getId(): ?int { return $this->id; }
     public function getTitle(): string { return $this->title; }
     public function getAuthor(): string { return $this->author; }
@@ -57,8 +55,6 @@ class Book implements \JsonSerializable {
     public function getLanguageName(): ?string { return $this->languageName; }
     public function getIsbn(): ?string { return $this->isbn;}
     
-
-    // 👇 3. MODIFIE CETTE FONCTION 👇
     public function jsonSerialize(): mixed {
         return [
             'id' => $this->id,
