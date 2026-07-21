@@ -1,5 +1,4 @@
 <?php
-// src/Controller/BookController.php
 
 require_once __DIR__ . '/../Repository/BookRepository.php';
 
@@ -97,9 +96,6 @@ class BookController {
             http_response_code(400); echo json_encode(["erreur" => "Champs obligatoires manquants."]); return;
         }
 
-        // =========================================================
-        // 🪄 MAGIE AVEC CAPTURE D'ERREUR POUR LA CATÉGORIE
-        // =========================================================
         if ($data['categoryId'] === 'NEW') {
             if (empty($data['newCategoryName'])) {
                 http_response_code(400); echo json_encode(["erreur" => "Le nom de la nouvelle catégorie est requis."]); return;
@@ -112,7 +108,6 @@ class BookController {
             }
         }
 
-        // 🪄 MAGIE AVEC CAPTURE D'ERREUR POUR LA LANGUE
         if (isset($data['languageId']) && $data['languageId'] === 'NEW') {
             if (empty($data['newLanguageName'])) {
                 http_response_code(400); echo json_encode(["erreur" => "Nom de la langue requis."]); return;
@@ -124,7 +119,7 @@ class BookController {
                 http_response_code(500); echo json_encode(["erreur" => "Erreur SQL Langue: " . $e->getMessage()]); return;
             }
         }   
-        // =========================================================
+
 
         $finalImageUrl = $this->processImageUpload($data['imageUrl'] ?? null);
         $description = $data['synopsis'] ?? '';
