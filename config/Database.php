@@ -1,5 +1,4 @@
 <?php
-// config/Database.php
 
 require_once 'config.php';
 
