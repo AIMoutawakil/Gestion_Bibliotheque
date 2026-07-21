@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. SÉCURITÉ : Vérification de l'Admin
+
     const userJson = sessionStorage.getItem('user');
     if (!userJson) { 
         window.location.href = 'login.html'; 
@@ -13,34 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 2. CHARGEMENT DES DONNÉES EN PARALLÈLE
     chargerStatistiques();
 });
 
 function chargerStatistiques() {
-    // On lance toutes les requêtes API en même temps pour que ça charge très vite
+
     Promise.all([
         fetch('index.php/api/books').then(res => res.json()),
         fetch('index.php/api/admin/students').then(res => res.json()),
         fetch('index.php/api/admin/borrowings').then(res => {
-            // Sécurité au cas où la route borrowings n'est pas encore parfaite
+
             if(!res.ok) return []; 
             return res.json();
         }).catch(() => []) 
     ])
     .then(([books, students, borrowings]) => {
         
-        // --- A. CALCUL DES KPIs ---
-        
-        // 1. Total des livres
         let totalBooks = 0;
         if (Array.isArray(books)) {
-            // On additionne la quantité totale de chaque livre (stock physique)
             totalBooks = books.reduce((sum, book) => sum + parseInt(book.totalQuantity || book.total_quantity || 0), 0);
         }
         document.getElementById('kpi-total-books').textContent = totalBooks;
 
-        // 2. Étudiants, Emprunts actifs et Retards
         let totalStudents = 0;
         let activeBorrowings = 0;
         let overdueBorrowings = 0;
@@ -50,14 +44,12 @@ function chargerStatistiques() {
             totalStudents = students.length;
 
             students.forEach(student => {
-                // Ta requête SQL dans UserController envoie déjà ces chiffres, on a juste à les additionner !
                 const encours = parseInt(student.active_borrowings || 0);
                 const retards = parseInt(student.overdue_borrowings || 0);
 
                 activeBorrowings += encours;
                 overdueBorrowings += retards;
 
-                // Génération des alertes : Étudiants en retard
                 if (retards > 0) {
                     alertesHTML += `
                         <div class="alert-item">
@@ -67,7 +59,6 @@ function chargerStatistiques() {
                     `;
                 }
                 
-                // Génération des alertes : Étudiants ayant atteint le quota max de 3 livres
                 if (encours >= 3) {
                     alertesHTML += `
                         <div class="warning-item">
@@ -83,7 +74,6 @@ function chargerStatistiques() {
         document.getElementById('kpi-active-borrowings').textContent = activeBorrowings;
         document.getElementById('kpi-overdue-borrowings').textContent = overdueBorrowings;
 
-        // Injection des alertes (ou message de félicitations s'il n'y a aucun problème)
         const alertsContainer = document.getElementById('alerts-container');
         if (alertesHTML === "") {
             alertsContainer.innerHTML = `<p style="color: #10b981; text-align: center; font-weight: 500; padding: 20px;">✅ Tout est en ordre ! Aucun retard et aucun dépassement de quota.</p>`;
@@ -91,7 +81,6 @@ function chargerStatistiques() {
             alertsContainer.innerHTML = alertesHTML;
         }
 
-        // --- B. AFFICHAGE DES DERNIERS EMPRUNTS ---
         const tbody = document.getElementById('recent-borrowings-body');
         
         if (Array.isArray(borrowings) && borrowings.length > 0) {
