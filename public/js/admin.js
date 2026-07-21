@@ -1,4 +1,3 @@
-// --- VARIABLES GLOBALES ---
 let adminCatalog = []; 
 let modeEditionId = null; 
 
@@ -14,10 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 2. CHARGEMENT DES LIVRES
     fetchBookStats();   
 
-    // 3. GESTION DU FORMULAIRE DE LA MODALE
     const form = document.getElementById('addBookForm');
 
     if (form) {
@@ -27,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const fileInput = document.getElementById('coverImage');
             let imageValue = document.getElementById('existing_image_url').value;
 
-            // La fonction qui envoie les données à PHP
             const envoyerAuServeur = (finalImageBase64) => {
                 const bookData = {
                     title: document.getElementById('title').value,
@@ -37,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     languageId: document.getElementById('language').value, 
                     newLanguageName: document.getElementById('newLanguageName').value,
                     
-                    // CORRECTION ICI : On envoie les 3 formats possibles pour la quantité
                     totalQuantity: document.getElementById('quantity').value,
                     quantity: document.getElementById('quantity').value,
                     total_quantity: document.getElementById('quantity').value,
@@ -77,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             };
 
-            // CONVERSION DE L'IMAGE
             if (fileInput && fileInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) { envoyerAuServeur(event.target.result); };
@@ -89,9 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// =========================================================
-// --- VARIABLES DE SCALABILITÉ (Pagination, Tri, Filtre) ---
-// =========================================================
 let currentPage = 1;
 const itemsPerPage = 10; 
 let currentSort = { column: null, order: 'asc' }; 
@@ -99,10 +90,6 @@ let currentSort = { column: null, order: 'asc' };
 // Écouteurs d'événements pour la recherche et le filtre
 document.getElementById('searchBookInput')?.addEventListener('input', () => { currentPage = 1; mettreAJourVue(); });
 document.getElementById('filterCategoryInput')?.addEventListener('change', () => { currentPage = 1; mettreAJourVue(); });
-
-// =========================================================
-// --- CHARGEMENT ET VUE GLOBALE ---
-// =========================================================
         
 function fetchBookStats() {
     fetch('index.php/api/books')
@@ -114,7 +101,6 @@ function fetchBookStats() {
         .catch(err => console.error("Erreur chargement livres", err));
 }
 
-// Gère la Recherche + Filtre + Tri + Pagination
 function mettreAJourVue() {
     let filteredBooks = adminCatalog.filter(book => {
         const searchInput = document.getElementById('searchBookInput');
@@ -183,10 +169,6 @@ function changerPage(page) {
     currentPage = page;
     mettreAJourVue();
 }
-
-// =========================================================
-// --- AFFICHAGE HTML (TABLEAU) ---
-// =========================================================
 
 function afficherTableauLivres(listeLivres) {
     const tbody = document.getElementById('books-table-body');
@@ -258,22 +240,15 @@ function afficherPagination(totalPages) {
     paginationDiv.innerHTML += `<button onclick="changerPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'};">&raquo;</button>`;
 }
 
-// =========================================================
-// --- ACTIONS : MODIFIER & SUPPRIMER ---
-// =========================================================
-
 function preparerModification(id) {
-    // 💡 CORRECTION ICI : On convertit en String pour éviter le blocage (Texte vs Nombre)
     const book = adminCatalog.find(b => String(b.id) === String(id) || String(b.book_id) === String(id));
     
-    // Ajout d'un log et d'une alerte pour le debug
     if(!book) {
         console.error("Livre introuvable dans adminCatalog pour l'ID :", id);
         alert("Erreur : Impossible de charger les données de ce livre.");
         return;
     }
 
-    // Remplir les champs du formulaire
     document.getElementById('title').value = book.title || '';
     document.getElementById('author').value = book.author || '';
     document.getElementById('category').value = book.categoryId || book.category_id || book.category || '';
@@ -283,24 +258,20 @@ function preparerModification(id) {
         langSelect.value = book.languageId || book.language_id || book.language || '';
     }
 
-    // On couvre toutes les façons dont la base de données peut renvoyer la quantité
     document.getElementById('quantity').value = book.totalQuantity || book.total_quantity || book.quantity || 1;
     
     if(book.isbn) document.getElementById('isbn').value = book.isbn;
     if(book.synopsis) document.getElementById('synopsis').value = book.synopsis;
     
-    // Gérer l'image
     document.getElementById('existing_image_url').value = book.imageUrl || book.image_url || '';
     document.getElementById('coverImage').value = ''; 
     
-    // Mettre l'aperçu si l'image existe
     if (book.imageUrl || book.image_url) {
         document.getElementById('imagePreview').innerHTML = `<img src="${book.imageUrl || book.image_url}" alt="Aperçu">`;
     } else {
         document.getElementById('imagePreview').innerHTML = `<span>Aucune image sélectionnée</span>`;
     }
     
-    // Changer l'interface de la modale en mode "Édition"
     document.querySelector('.modal-header h2').textContent = `Modifier : ${book.title}`;
     document.getElementById('submitBtn').textContent = "💾 Enregistrer les modifications";
 
@@ -310,7 +281,6 @@ function preparerModification(id) {
 }
 
 function supprimerLivre(id) {
-    // CORRECTION ICI : L'alerte de suppression était mal écrite
     if (!confirm("Attention : Voulez-vous vraiment supprimer ce livre du catalogue ?")) return;
 
     fetch(`index.php/api/books/${id}`, { method: 'DELETE', credentials: 'same-origin' })
@@ -324,10 +294,6 @@ function supprimerLivre(id) {
             }
         });
 }
-
-// =========================================================
-// --- COMPORTEMENT DE LA FENÊTRE MODALE & UPLOAD ---
-// =========================================================
 
 function openModal(modalId) {
     if (modeEditionId === null) {
@@ -356,7 +322,6 @@ function closeModal(modalId) {
     }
 }
 
-// Fermer en cliquant en dehors
 document.addEventListener('click', function(event) {
     const modals = document.querySelectorAll('.modal-overlay');
     modals.forEach(modal => {
@@ -366,7 +331,6 @@ document.addEventListener('click', function(event) {
     });
 }); 
 
-// Aperçu de l'image
 function previewImage(event) {
     const previewContainer = document.getElementById('imagePreview');
     const file = event.target.files[0];
@@ -387,7 +351,6 @@ function previewImage(event) {
     }
 }
 
-// Affiche le champ texte si l'admin veut créer une nouvelle catégorie
 function gererNouvelleCategorie() {
     const select = document.getElementById('category');
     const inputNouvelleCat = document.getElementById('newCategoryName');
@@ -402,7 +365,6 @@ function gererNouvelleCategorie() {
     }
 }
 
-// Affiche le champ texte si l'admin veut créer une nouvelle langue
 function gererNouvelleLangue() {
     const select = document.getElementById('language');
     const inputNouvelleLangue = document.getElementById('newLanguageName');
