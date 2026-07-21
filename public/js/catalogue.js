@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     if (searchInput) searchInput.addEventListener('input', applyFilters);
 
-    // ========================================================
-    // GESTION DE LA MODALE DES CATÉGORIES
-    // ========================================================
     const catSearchTrigger = document.getElementById('category-search');
     const catModal = document.getElementById('categoryModal');
     const closeCatModalBtn = document.getElementById('closeCatModalBtn');
@@ -46,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             afficherCategoriesDansModale(e.target.value);
         });
     }
-    // ========================================================
 
     const dispoCheckbox = document.getElementById('filter-dispo');
     if (dispoCheckbox) dispoCheckbox.addEventListener('change', applyFilters);
@@ -76,7 +72,6 @@ function fetchBooks() {
         });
 }
 
-// --- SYSTÈME DE CATÉGORIES DYNAMIQUES ---
 function extraireCategories() {
     const catSet = new Set();
     allBooks.forEach(book => {
@@ -142,7 +137,6 @@ function configurerEcouteursCategories(selecteur) {
     });
 }
 
-// --- LOGIQUE DE FILTRAGE DES LIVRES ---
 function applyFilters() {
     const searchTerm = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase() : '';
     const dispoCheckbox = document.getElementById('filter-dispo');
@@ -182,7 +176,6 @@ function applyFilters() {
     displayBooks(filteredBooks);
 }
 
-// --- AFFICHAGE DE LA GRILLE DE LIVRES ---
 function displayBooks(booksToDisplay) {
     const container = document.getElementById('books-container');
     if(!container) return;
@@ -228,7 +221,6 @@ function displayBooks(booksToDisplay) {
     });
 }
 
-// --- FONCTION D'EMPRUNT SIMPLIFIÉE ---
 function emprunterLivre(bookId, btnElement) {
     const userJson = sessionStorage.getItem('user');
     if (!userJson) {
@@ -267,7 +259,6 @@ function emprunterLivre(bookId, btnElement) {
     });
 }
 
-// --- ENVOYER UN MESSAGE À L'ADMIN ---
 function envoyerMessageAdmin() {
     const userJson = sessionStorage.getItem('user');
     if (!userJson) {
@@ -301,7 +292,6 @@ function envoyerMessageAdmin() {
         return data;
     })
     .then(data => {
-        // CORRECTION ICI : Le bon message de succès pour le formulaire de contact !
         alert("✅ " + (data.message || "Votre message a été envoyé à l'administration !"));
         textArea.value = ""; 
         const modal = document.getElementById('messageModal');
