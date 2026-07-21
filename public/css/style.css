@@ -1,10 +1,8 @@
-/* ==========================================================================
-   1. VARIABLES & RESET (Base moderne)
-   ========================================================================== */
+
 :root {
-    --primary: #4f46e5;       /* Bleu Indigo */
+    --primary: #4f46e5;   
     --primary-hover: #4338ca;
-    --bg-main: #f8fafc;       /* Gris très clair pour le fond */
+    --bg-main: #f8fafc;      
     --bg-card: #ffffff;
     --text-dark: #0f172a;
     --text-muted: #64748b;
@@ -25,10 +23,6 @@ body {
     color: var(--text-dark);
     -webkit-font-smoothing: antialiased;
 }
-
-/* ==========================================================================
-   2. NAVBAR (Glassmorphism)
-   ========================================================================== */
 .navbar {
     position: sticky;
     top: 0;
@@ -47,7 +41,7 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
-    justify-content: space-between; /* Écarte les 3 zones au maximum */
+    justify-content: space-between; 
     align-items: center;
 }
 
@@ -61,11 +55,10 @@ body {
     gap: 10px;
 }
 
-/* --- ZONE CENTRALE (Liens) --- */
 .nav-links {
     display: flex;
     gap: 30px;
-    position: absolute; /* Force le centrage exact au milieu de l'écran */
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -84,10 +77,9 @@ body {
 .nav-links a.active {
     color: royalblue;
     font-weight: 700;
-    border-bottom: 2px solid royalblue; /* Petit soulignement design */
+    border-bottom: 2px solid royalblue;
 }
 
-/* --- ZONE DROITE (Profil) --- */
 .auth-zone {
     display: flex;
     align-items: center;
@@ -103,7 +95,7 @@ body {
 .avatar {
     width: 35px;
     height: 35px;
-    background-color: #0ea5e9; /* Bleu clair */
+    background-color: #0ea5e9; 
     color: white;
     border-radius: 50%;
     display: flex;
@@ -133,10 +125,10 @@ body {
 
 .btn-logout:hover {
     background: #fee2e2;
-    color: #dc2626; /* Devient rouge au survol */
+    color: #dc2626; 
 }
 
-/* Les petits éléments générés par ton auth.js */
+
 .auth-zone { display: flex; align-items: center; gap: 15px; }
 .auth-zone img { border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .auth-zone a, .auth-zone button { text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; }
@@ -144,21 +136,15 @@ body {
 .btn-logout:hover { background-color: #fecaca; }
 .btn-history { background-color: #e0e7ff; color: #3730a3; }
 
-/* ==========================================================================
-   3. LAYOUT PRINCIPAL (Grid)
-   ========================================================================== */
 .main-container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 250px 1fr; /* Sidebar 250px, le reste pour les livres */
+    grid-template-columns: 250px 1fr; 
     gap: 2rem;
 }
 
-/* ==========================================================================
-   4. SIDEBAR (Catégories)
-   ========================================================================== */
 .sidebar {
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -191,9 +177,6 @@ body {
 .category-item:hover { background-color: var(--bg-main); color: var(--primary); }
 .category-item.active { background-color: var(--primary); color: white; }
 
-/* ==========================================================================
-   5. CONTENU & GRILLE DE LIVRES
-   ========================================================================== */
 .content-header {
     display: flex;
     justify-content: space-between;
@@ -203,7 +186,7 @@ body {
 
 .search-bar input {
     padding: 0.75rem 1.5rem;
-    border-radius: 99px; /* Bouton très rond */
+    border-radius: 99px; 
     border: 1px solid var(--border-light);
     width: 300px;
     outline: none;
@@ -215,16 +198,12 @@ body {
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
-/* Grille automatique (Responsive sans Media Queries !) */
 .books-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.5rem;
 }
 
-/* ==========================================================================
-   6. COMPOSANT : CARTE LIVRE
-   ========================================================================== */
 .book-card {
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -271,17 +250,15 @@ body {
 }
 .btn-primary:hover { background-color: var(--primary-hover); }
 .btn-primary:disabled { background-color: #cbd5e1; cursor: not-allowed; }
-/* ==========================================================================
-   BOUTON DÉCONNEXION (Effet animé en Rouge)
-   ========================================================================== */
+
 .btn-logout {
   width: 9em;
   position: relative;
-  height: 2.8em; /* Légèrement réduit pour bien rentrer dans la navbar */
-  border: 3px ridge #dc2626; /* Le rouge vif */
+  height: 2.8em; 
+  border: 3px ridge #dc2626; 
   outline: none;
   background-color: transparent;
-  color: #dc2626; /* Texte rouge pour qu'il soit lisible sur la navbar blanche */
+  color: #dc2626;
   transition: 1s;
   border-radius: 0.3em;
   font-size: 0.9rem;
@@ -290,10 +267,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1; /* Garde le texte au premier plan */
+  z-index: 1; 
 }
 
-/* Le masque du haut */
 .btn-logout::after {
   content: "";
   position: absolute;
@@ -301,13 +277,12 @@ body {
   left: 3%;
   width: 95%;
   height: 40%;
-  background-color: #ffffff; /* Blanc comme la navbar pour cacher la bordure */
+  background-color: #ffffff; 
   transition: 0.5s;
   transform-origin: center;
   z-index: -1;
 }
 
-/* Le masque du bas */
 .btn-logout::before {
   content: "";
   transform-origin: center;
@@ -316,26 +291,21 @@ body {
   left: 3%;
   width: 95%;
   height: 40%;
-  background-color: #ffffff; /* Blanc comme la navbar */
+  background-color: #ffffff; 
   transition: 0.5s;
   z-index: -1;
 }
 
-/* Animation au survol */
 .btn-logout:hover::before, .btn-logout:hover::after {
   transform: scale(0);
 }
 
 .btn-logout:hover {
-  box-shadow: inset 0px 0px 25px #dc2626; /* Lueur interne rouge */
+  box-shadow: inset 0px 0px 25px #dc2626; 
 }
 
-/* ==========================================================================
-   GRILLE MES EMPRUNTS
-   ========================================================================== */
 .borrowings-grid {
     display: grid;
-    /* On passe de 280px à 180px pour avoir la même largeur que le catalogue */
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 25px;
     margin-top: 20px;
