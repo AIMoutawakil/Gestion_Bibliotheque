@@ -1,5 +1,4 @@
 <?php
-// src/Repository/UserRepository.php
 
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../Model/User.php';
@@ -11,19 +10,14 @@ class UserRepository {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    // Chercher un utilisateur par son email pour vérifier la connexion
     public function findByEmail(string $email): ?User {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email' => $email]);
         
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Si l'email n'existe pas dans la base
         if (!$data) {
             return null;
         }
-
-        // Si on le trouve, on crée l'objet User
         return new User(
             $data['full_name'],
             $data['email'],
